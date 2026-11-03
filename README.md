@@ -23,10 +23,10 @@ Innovation · Problem understanding · Potential impact · Technical execution �
 The challenge is only revealed on Day 1, so no solution is needed in advance. Source: `MYH2026-Information-for-Participating-Schools-1.pdf`.
 
 ## Status
-- Empty page only; no project code until the challenge is revealed.
+- Empty page deployed to Vercel; no project code until the challenge is revealed.
 
 ## Links
-- Live site: TBD
-- Repo: TBD
+- Live site: https://mes-hackathon-2026.vercel.app/
+- Repo: https://github.com/Anwar-Chalamannil/MES-Hackathon-2026
 
 ## Notes
