@@ -35,6 +35,15 @@ body {
   overflow-x: hidden;
 }
 
+@keyframes winner-flash {
+  from { background-color: var(--color-brand-soft); }
+  to { background-color: transparent; }
+}
+.winner-flash {
+  animation: winner-flash 600ms ease-out;
+  border-radius: var(--radius-card);
+}
+
 .money {
   font-variant-numeric: tabular-nums;
   font-weight: 700;

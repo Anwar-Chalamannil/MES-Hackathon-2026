@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { Pill, ShoppingCart, UtensilsCrossed } from 'lucide-react';
+import { ButtonLink } from '../components/ui/Button';
 import { APP_TAGLINE } from '../config';
 
 const TILES = [
@@ -16,6 +17,14 @@ export default function Home() {
         <p className="mt-3 text-[17px] text-muted">
           Compare one basket across apps and see what you actually pay after delivery, fees and vouchers.
         </p>
+      </section>
+
+      <section className="rounded-card border-t-4 border-brand bg-surface p-4 shadow-sm">
+        <h2 className="text-[17px] font-extrabold">Try the 60-second demo</h2>
+        <p className="mt-1 text-[15px] text-muted">
+          Build a Jollibee meal and watch the cheapest app change as you add a voucher or switch cards.
+        </p>
+        <ButtonLink to="/food/jollibee" className="mt-3 w-full sm:w-auto">Start with Jollibee →</ButtonLink>
       </section>
 
       <ul className="grid gap-3 md:grid-cols-3">
