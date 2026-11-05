@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+
+  --color-brand: #8a1538;
+  --color-brand-soft: #f6e7ec;
+  --color-bg: #faf7f2;
+  --color-surface: #ffffff;
+  --color-ink: #1c1917;
+  --color-muted: #6b625a;
+  --color-line: #e8e1d8;
+  --color-save: #0f7b55;
+  --color-warn: #b45309;
+  --color-fail: #b42318;
+
+  --radius-card: 14px;
+  --radius-btn: 10px;
+}
+
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+.money {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
