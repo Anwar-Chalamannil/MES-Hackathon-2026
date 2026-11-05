@@ -32,7 +32,7 @@ export default function BasketBar({ scenario }: { scenario: Scenario }) {
             <span className="truncate text-[15px] font-bold">{count} {count === 1 ? 'item' : 'items'}</span>
           </button>
           <ButtonLink to={`/compare/${scenario}`}>
-            Compare {apps} {apps === 1 ? 'app' : 'apps'} →
+            Compare {apps} {apps === 1 ? 'app' : 'apps'}
           </ButtonLink>
         </div>
       </div>

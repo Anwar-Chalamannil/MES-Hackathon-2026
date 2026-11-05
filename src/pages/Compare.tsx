@@ -60,7 +60,7 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
         <div className="min-w-0">
           <h1 className="text-[24px] font-extrabold tracking-tight">Compare</h1>
           <p className="truncate text-[14px] text-muted">
-            {title} · {count} {count === 1 ? 'item' : 'items'}{merchant ? ` · ${merchant.name}` : ''}
+            {title}, {count} {count === 1 ? 'item' : 'items'}{merchant ? `, ${merchant.name}` : ''}
           </p>
         </div>
         <Button variant="secondary" onClick={() => setEditing(true)}>

@@ -7,7 +7,7 @@ export default function TopNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-surface">
       <div className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4">
-        <Link to="/" className="inline-flex min-h-11 items-center text-[17px] font-extrabold tracking-tight text-brand">
+        <Link to="/" className="inline-flex min-h-11 items-center font-display text-[20px] font-extrabold tracking-tight text-brand">
           {APP_NAME}
         </Link>
         <nav aria-label="Main" className="hidden gap-1 lg:flex">

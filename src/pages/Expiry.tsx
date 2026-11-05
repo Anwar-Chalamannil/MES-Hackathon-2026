@@ -65,7 +65,7 @@ export default function Expiry() {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {rows.map(({ item: p, expiryMs }) => (
-            <li key={p.id} data-testid="expiry-row" data-promo={p.id} className={`min-w-0 rounded-card border bg-surface p-4 shadow-sm ${expiryMs <= nowMs ? 'border-fail/40' : 'border-line'}`}>
+            <li key={p.id} data-testid="expiry-row" data-promo={p.id} className={`min-w-0 rounded-card border bg-surface p-4 ${expiryMs <= nowMs ? 'border-fail/40' : 'border-line'}`}>
               <div className="flex flex-wrap items-center gap-2">
                 <PlatformChip platformId={p.platformId} />
                 {p.code && <code className="rounded bg-brand-soft px-1.5 py-0.5 text-[12px] font-bold text-brand">{p.code}</code>}

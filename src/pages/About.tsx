@@ -56,7 +56,7 @@ export default function About() {
               <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-1 font-bold text-brand underline">
                 {s.title} <ExternalLink size={13} aria-hidden="true" />
               </a>
-              <span className="block text-muted">{EVIDENCE[s.evidence]} · {s.accessed}</span>
+              <span className="block text-muted">{EVIDENCE[s.evidence]}, {s.accessed}</span>
             </li>
           ))}
         </ul>

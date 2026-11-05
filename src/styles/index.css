@@ -1,22 +1,26 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/public-sans';
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+  /* Body and forms: Public Sans (plain zeros, tabular figures, calm). Headlines and big prices: Bricolage. */
+  --font-sans: 'Public Sans Variable', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Public Sans Variable', system-ui, sans-serif;
 
-  --color-brand: #8a1538;
-  --color-brand-soft: #f6e7ec;
-  --color-bg: #faf7f2;
+  --color-brand: #0b5560; /* Gulf teal: actions and active states */
+  --color-brand-soft: #e0eded;
+  --color-win: #8a1538; /* Maroon: reserved. It marks the lowest total and nothing else. */
+  --color-bg: #f1f4f3; /* Pearl */
   --color-surface: #ffffff;
-  --color-ink: #1c1917;
-  --color-muted: #6b625a;
-  --color-line: #e8e1d8;
-  --color-save: #0f7b55;
+  --color-ink: #0e2329; /* Gulf night */
+  --color-muted: #4f6469;
+  --color-line: #d3dbda;
+  --color-save: #2f7a12;
   --color-warn: #a04508; /* 6.3:1 on white, 5.4:1 on its 10% tint */
   --color-fail: #b42318;
 
-  --radius-card: 14px;
-  --radius-btn: 10px;
+  --radius-card: 10px;
+  --radius-btn: 8px;
 }
 
 html,
@@ -35,8 +39,15 @@ body {
   overflow-x: hidden;
 }
 
+@layer base {
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+}
+
 @keyframes winner-flash {
-  from { background-color: var(--color-brand-soft); }
+  from { background-color: color-mix(in srgb, var(--color-win) 12%, transparent); }
   to { background-color: transparent; }
 }
 .winner-flash {

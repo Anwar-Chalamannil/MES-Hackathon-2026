@@ -16,7 +16,7 @@ const STATE_STYLE: Record<PromoState, { Icon: typeof Check; cls: string }> = {
   info: { Icon: Info, cls: 'text-muted' },
 };
 
-const tag = 'rounded-full px-2 py-0.5 text-[11px] font-bold tracking-wide uppercase';
+const tag = 'rounded-full px-2 py-0.5 text-[12px] font-bold';
 
 /**
  * A voucher as a ticket: platform and tags, the benefit in large type, expiry, and a plain-language status
@@ -41,7 +41,7 @@ export default function VoucherCard({
     <article
       data-testid="voucher"
       data-promo={promo.id}
-      className={`relative overflow-hidden rounded-card border bg-surface p-4 shadow-sm ${expired ? 'border-fail/40' : 'border-line'}`}
+      className={`relative overflow-hidden rounded-card border bg-surface p-4 ${expired ? 'border-fail/40' : 'border-line'}`}
     >
       <div className="flex flex-wrap items-center gap-2">
         <PlatformChip platformId={promo.platformId} />
@@ -51,7 +51,7 @@ export default function VoucherCard({
         {promo.origin === 'user' ? (
           <span className={`${tag} bg-brand text-white`}>Your voucher</span>
         ) : (
-          <span className={`${tag} ${isDemo ? 'bg-warn/10 text-warn' : 'bg-line text-muted'}`} title={CLASS_HELP[promo.classification]}>
+          <span className={`${tag} ${isDemo ? 'bg-warn/10 text-warn' : 'bg-line text-ink'}`} title={CLASS_HELP[promo.classification]}>
             {CLASS_LABEL[promo.classification]}
           </span>
         )}

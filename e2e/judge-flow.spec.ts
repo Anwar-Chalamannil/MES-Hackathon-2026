@@ -14,7 +14,20 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
   // Fresh visitor
   await page.goto('/?reset=1');
   await expect(page.getByRole('complementary', { name: 'Simulated data notice' })).toContainText('Simulated data');
-  await page.getByRole('link', { name: /Start with Jollibee/ }).click();
+  // The home page hero is a live comparison: flipping a toggle re-ranks the apps
+  const heroFirst = page.getByTestId('hero-tag').first();
+  await expect(heroFirst).toContainText('Keeta');
+  await expect(heroFirst).toContainText('QAR 58.00');
+  await page.getByRole('button', { name: 'I add voucher DEMO-TB20' }).click();
+  await expect(heroFirst).toContainText('Talabat');
+  await expect(heroFirst).toContainText('QAR 52.60');
+  await page.getByRole('button', { name: 'I pay with a Dukhan Bank card' }).click();
+  await expect(heroFirst).toContainText('Rafeeq');
+  await expect(heroFirst).toContainText('QAR 45.30');
+  await expect(page.getByTestId('hero-explanation')).toContainText('Rafeeq has the lowest total');
+
+  await page.getByRole('link', { name: 'Compare your own basket' }).click();
+  await page.getByRole('link', { name: /Jollibee/ }).click();
 
   // Build the hero basket: 2x 2pc Chickenjoy, 1x Jolly Spaghetti, 1x Regular Coke
   await btn(page, 'Add 2pc Chickenjoy').click();

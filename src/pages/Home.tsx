@@ -1,48 +1,55 @@
 import { Link } from 'react-router';
-import { Pill, ShoppingCart, UtensilsCrossed } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
+import LiveComparison from '../components/home/LiveComparison';
 import { ButtonLink } from '../components/ui/Button';
-import { APP_TAGLINE } from '../config';
 
-const TILES = [
-  { to: '/food', title: 'Food delivery', text: 'Restaurants on Talabat, Snoonu, Rafeeq, Keeta', icon: UtensilsCrossed },
-  { to: '/grocery', title: 'Groceries', text: 'Carrefour, Lulu, Ninja and delivery apps', icon: ShoppingCart },
-  { to: '/pharmacy', title: 'Pharmacy & care', text: 'Skincare and personal care, no medicines', icon: Pill },
+const CATEGORIES = [
+  { to: '/food', title: 'Food delivery', text: 'Restaurants on Talabat, Snoonu, Rafeeq and Keeta' },
+  { to: '/grocery', title: 'Groceries', text: 'Carrefour, Lulu, Ninja and the delivery apps' },
+  { to: '/pharmacy', title: 'Pharmacy and care', text: 'Skincare and personal care, no medicines' },
 ] as const;
 
 export default function Home() {
   return (
-    <div className="space-y-6">
-      <section>
-        <h1 className="text-[32px] leading-tight font-extrabold tracking-tight">{APP_TAGLINE}</h1>
-        <p className="mt-3 text-[17px] text-muted">
-          Compare one basket across apps and see what you actually pay after delivery, fees and vouchers.
-        </p>
+    <div className="space-y-10">
+      <section className="space-y-6 lg:grid lg:grid-cols-[1fr_1fr] lg:grid-rows-[auto_auto_1fr] lg:gap-x-14 lg:gap-y-6 lg:space-y-0">
+        <div className="lg:col-start-1 lg:row-start-1">
+          <h1 className="text-[42px] leading-[0.98] font-extrabold tracking-[-0.03em] lg:text-[72px]">
+            Same meal.
+            <br />
+            Four totals.
+          </h1>
+          <p className="mt-3 max-w-[36ch] text-[17px] leading-snug text-muted lg:mt-4 lg:text-[18px]">
+            Fees, vouchers and your card decide what you pay, not the menu price.
+          </p>
+        </div>
+
+        <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
+          <LiveComparison />
+        </div>
+
+        <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
+          <ButtonLink to="/food" className="min-h-12 w-full px-6 text-[16px] sm:w-auto">
+            Compare your own basket
+          </ButtonLink>
+        </div>
       </section>
 
-      <section className="rounded-card border-t-4 border-brand bg-surface p-4 shadow-sm">
-        <h2 className="text-[17px] font-extrabold">Try the 60-second demo</h2>
-        <p className="mt-1 text-[15px] text-muted">
-          Build a Jollibee meal and watch the cheapest app change as you add a voucher or switch cards.
-        </p>
-        <ButtonLink to="/food/jollibee" className="mt-3 w-full sm:w-auto">Start with Jollibee →</ButtonLink>
-      </section>
-
-      <ul className="grid gap-3 md:grid-cols-3">
-        {TILES.map(({ to, title, text, icon: Icon }) => (
-          <li key={to}>
-            <Link
-              to={to}
-              className="flex min-h-20 items-center gap-4 rounded-card border border-line bg-surface p-4 shadow-sm"
-            >
-              <Icon className="shrink-0 text-brand" size={28} aria-hidden="true" />
-              <span className="min-w-0">
-                <span className="block text-[17px] font-bold">{title}</span>
-                <span className="block text-[15px] text-muted">{text}</span>
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <nav aria-label="Categories">
+        <ul className="border-t border-line">
+          {CATEGORIES.map((c) => (
+            <li key={c.to} className="border-b border-line">
+              <Link to={c.to} className="flex min-h-16 items-center gap-4 py-3 active:bg-brand-soft">
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display text-[22px] leading-tight font-bold">{c.title}</span>
+                  <span className="block text-[15px] text-muted">{c.text}</span>
+                </span>
+                <ChevronRight size={22} aria-hidden="true" className="shrink-0 text-muted" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

@@ -15,7 +15,7 @@ export default function ProductRow({
   totalApps: number;
 }) {
   const from = Math.min(...Object.values(product.prices));
-  const detail = [product.brand, product.size, product.variant].filter(Boolean).join(' · ');
+  const detail = [product.brand, product.size, product.variant].filter(Boolean).join(', ');
   return (
     <li className="flex items-center gap-3 rounded-card border border-line bg-surface p-3">
       <div className="min-w-0 flex-1">

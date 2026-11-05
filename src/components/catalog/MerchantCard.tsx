@@ -13,7 +13,7 @@ export default function MerchantCard({ merchant }: { merchant: Merchant }) {
   return (
     <Link
       to={`/food/${merchant.id}`}
-      className="flex min-h-20 items-center gap-3 rounded-card border border-line bg-surface p-3 shadow-sm active:bg-brand-soft"
+      className="flex min-h-20 items-center gap-3 rounded-card border border-line bg-surface p-3 active:bg-brand-soft"
     >
       <span aria-hidden="true" className="flex size-14 shrink-0 items-center justify-center rounded-[12px] bg-brand-soft text-[20px] font-extrabold text-brand">
         {merchant.name.charAt(0)}
@@ -24,8 +24,7 @@ export default function MerchantCard({ merchant }: { merchant: Merchant }) {
         <span className="mt-1 flex items-center gap-2 text-[13px] text-muted">
           <PlatformDots platformIds={platformIds} />
           <span>{platformIds.length === 1 ? 'On 1 app' : `On ${platformIds.length} apps`}</span>
-          <span aria-hidden="true">·</span>
-          <Clock size={13} aria-hidden="true" />
+          <Clock size={13} aria-hidden="true" className="ml-1" />
           <span>{minEta}–{maxEta} min</span>
         </span>
       </span>

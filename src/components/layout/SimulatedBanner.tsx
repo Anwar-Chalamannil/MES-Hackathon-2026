@@ -3,9 +3,9 @@ export default function SimulatedBanner() {
   return (
     <aside
       aria-label="Simulated data notice"
-      className="bg-brand-soft text-brand text-[13px] font-semibold px-4 py-2 text-center"
+      className="bg-brand-soft px-4 py-2 text-center text-[13px] font-semibold text-brand"
     >
-      Simulated data: prices, fees, availability and vouchers are examples, not live offers.
+      Simulated data: every price and offer here is an example.
     </aside>
   );
 }

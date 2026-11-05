@@ -33,7 +33,9 @@ export default function OfferCard({
     <article
       data-testid={winner ? 'winner' : 'offer'}
       data-listing={offer.listingId}
-      className={`min-w-0 overflow-hidden rounded-card border bg-surface shadow-sm ${winner ? 'border-brand border-t-4' : 'border-line'}`}
+      className={`min-w-0 overflow-hidden rounded-card border bg-surface ${
+        winner ? `border-t-4 ${mode === 'price' ? 'border-win' : 'border-brand'}` : 'border-line'
+      }`}
     >
       <div className="space-y-3 p-4">
         <div className="flex items-start justify-between gap-2">
@@ -41,19 +43,23 @@ export default function OfferCard({
             <PlatformChip platformId={offer.platformId} />
             {merchant && merchant.scenario !== 'food' && <p className="mt-1 truncate text-[13px] text-muted">{merchant.name}</p>}
           </div>
-          {winner ? (
-            <span className="shrink-0 rounded-full bg-brand px-3 py-1 text-[12px] font-extrabold tracking-wide text-white uppercase">
-              {STAMP[mode]}
-            </span>
-          ) : gap === 0 ? (
-            <span className="shrink-0 rounded-full bg-save/10 px-3 py-1 text-[12px] font-bold text-save">Lowest price</span>
-          ) : null}
+          {/* Maroon means "lowest total". In Fastest or Biggest discount mode the winner is teal and the cheapest card keeps maroon. */}
+          <div className="flex shrink-0 flex-col items-end gap-1">
+            {winner && (
+              <span className={`rounded-full px-3 py-1 text-[13px] font-bold text-white ${mode === 'price' ? 'bg-win' : 'bg-brand'}`}>
+                {STAMP[mode]}
+              </span>
+            )}
+            {gap === 0 && !(winner && mode === 'price') && (
+              <span className="rounded-full border border-win px-3 py-0.5 text-[13px] font-bold text-win">Lowest price</span>
+            )}
+          </div>
         </div>
 
         <div className="flex items-end justify-between gap-3">
           <div>
             <p className="text-[13px] text-muted">You pay</p>
-            <Money dh={offer.totalDh} className={winner ? 'text-[32px] leading-none' : 'text-[24px] leading-none'} />
+            <Money dh={offer.totalDh} className={`font-display tracking-tight ${winner ? 'text-[40px] leading-none' : 'text-[28px] leading-none'}`} />
           </div>
           <div className="text-right text-[13px] text-muted">
             <p className="flex items-center justify-end gap-1">

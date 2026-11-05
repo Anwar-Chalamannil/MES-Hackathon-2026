@@ -11,7 +11,7 @@ Approved plan: BasketWise v2 at `C:\Users\fadhi\.claude\plans\pasted-content-id-
 | zustand (persist) | Small store with built-in localStorage and versioning. |
 | vitest | Unit tests for the calculation engine and data. |
 | Playwright (one spec) | One end-to-end judge journey. |
-| @fontsource-variable/plus-jakarta-sans, lucide-react | Self-hosted font, tree-shaken icons. |
+| @fontsource-variable/bricolage-grotesque, @fontsource-variable/public-sans, lucide-react | Self-hosted fonts (no Google request) and tree-shaken icons. Bricolage Grotesque for headlines and big prices, Public Sans for body text and forms (plain zeros and tabular figures, which matter for prices). |
 
 No backend, database, auth, date library or component library.
 

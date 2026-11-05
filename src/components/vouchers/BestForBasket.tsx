@@ -24,7 +24,7 @@ export default function BestForBasket({ comparison, basket }: { comparison: Comp
   }
 
   return (
-    <section aria-labelledby="best-title" className="rounded-card border-t-4 border-brand bg-surface p-4 shadow-sm">
+    <section aria-labelledby="best-title" className="rounded-card border border-l-4 border-line border-l-brand bg-surface p-4">
       <h2 id="best-title" className="flex items-center gap-2 text-[15px] font-extrabold">
         <Sparkles size={18} className="text-brand" aria-hidden="true" /> Best for your basket
       </h2>

@@ -14,7 +14,7 @@ export default function ProfileBar({ scenario }: { scenario: Scenario }) {
 
   const parts = [
     profile.channel === 'card'
-      ? `${label(NETWORKS, profile.network)} card · ${label(ISSUERS, profile.issuer)}`
+      ? `${label(NETWORKS, profile.network)} card, ${label(ISSUERS, profile.issuer)}`
       : label(CHANNELS, profile.channel),
     profile.memberships.length ? profile.memberships.map((m) => label(MEMBERSHIPS, m)).join(', ') : 'No memberships',
     profile.firstOrderOn.length ? `New to ${profile.firstOrderOn.map(platformName).join(', ')}` : 'Existing customer',
@@ -30,7 +30,7 @@ export default function ProfileBar({ scenario }: { scenario: Scenario }) {
         <SlidersHorizontal size={20} className="shrink-0 text-brand" aria-hidden="true" />
         <span className="min-w-0 flex-1">
           <span className="block text-[12px] font-semibold text-muted">Offers are checked for</span>
-          <span className="block text-[14px] leading-snug font-bold">{parts.join(' · ')}</span>
+          <span className="block text-[14px] leading-snug font-bold">{parts.join(', ')}</span>
         </span>
         <span className="shrink-0 text-[13px] font-bold text-brand">Change</span>
       </button>
