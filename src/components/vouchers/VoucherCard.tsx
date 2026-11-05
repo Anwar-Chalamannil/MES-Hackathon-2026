@@ -41,7 +41,7 @@ export default function VoucherCard({
     <article
       data-testid="voucher"
       data-promo={promo.id}
-      className={`relative overflow-hidden rounded-card border border-line bg-surface p-4 shadow-sm ${expired ? 'opacity-80' : ''}`}
+      className={`relative overflow-hidden rounded-card border bg-surface p-4 shadow-sm ${expired ? 'border-fail/40' : 'border-line'}`}
     >
       <div className="flex flex-wrap items-center gap-2">
         <PlatformChip platformId={promo.platformId} />

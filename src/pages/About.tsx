@@ -53,7 +53,7 @@ export default function About() {
         <ul className="space-y-2">
           {sources.map((s) => (
             <li key={s.id} className="text-[14px]">
-              <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-bold text-brand underline">
+              <a href={s.url} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center gap-1 font-bold text-brand underline">
                 {s.title} <ExternalLink size={13} aria-hidden="true" />
               </a>
               <span className="block text-muted">{EVIDENCE[s.evidence]} · {s.accessed}</span>

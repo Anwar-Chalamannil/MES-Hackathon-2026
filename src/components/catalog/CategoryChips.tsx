@@ -9,7 +9,7 @@ export default function CategoryChips({
   onSelect: (category: string | null) => void;
 }) {
   const chip = (on: boolean) =>
-    `shrink-0 min-h-10 rounded-full border px-4 text-[14px] font-semibold ${
+    `shrink-0 min-h-11 rounded-full border px-4 text-[14px] font-semibold ${
       on ? 'border-brand bg-brand-soft text-brand' : 'border-line bg-surface text-muted'
     }`;
   return (

@@ -13,7 +13,7 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
 
   // Fresh visitor
   await page.goto('/?reset=1');
-  await expect(page.getByRole('note')).toContainText('Simulated data');
+  await expect(page.getByRole('complementary', { name: 'Simulated data notice' })).toContainText('Simulated data');
   await page.getByRole('link', { name: /Start with Jollibee/ }).click();
 
   // Build the hero basket: 2x 2pc Chickenjoy, 1x Jolly Spaghetti, 1x Regular Coke
@@ -53,7 +53,7 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
 
   // A4: Dukhan Bank card, Rafeeq wins
   const setProfile = async (name: string) => {
-    await page.getByRole('button', { name: 'Change payment and profile' }).click();
+    await page.getByRole('button', { name: /Offers are checked for/ }).click();
     await page.getByRole('radio', { name, exact: true }).click();
     await btn(page, 'Close').click();
   };
@@ -142,4 +142,58 @@ test('wallet: add, edit and delete a voucher, and track expiry (all saved across
   await expect(page.getByTestId('voucher').filter({ hasText: 'Your voucher' })).toHaveCount(0);
 
   expect(errors, 'console errors').toEqual([]);
+});
+
+test('resilience: damaged saved data, unknown page, and keyboard use', async ({ page }) => {
+  const crashes: string[] = [];
+  page.on('pageerror', (e) => crashes.push(e.message));
+
+  // Damaged saved data (wrong shape) is ignored: the app starts fresh instead of crashing
+  await page.addInitScript(() => {
+    try {
+      if (!sessionStorage.getItem('seeded')) {
+        localStorage.setItem('basketwise', '{"state":{"baskets":5,"wallet":null},"version":1}');
+        sessionStorage.setItem('seeded', '1');
+      }
+    } catch { /* ignore */ }
+  });
+  await page.goto('/wallet');
+  await expect(page.getByRole('heading', { name: 'Voucher wallet' })).toBeVisible();
+  await expect(page.getByRole('radio', { name: /Saved \(12\)/ })).toBeVisible(); // defaults restored
+
+  // Saved data that is not even valid JSON
+  await page.evaluate(() => localStorage.setItem('basketwise', 'not json {{'));
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Voucher wallet' })).toBeVisible();
+
+  // Unknown page: friendly message, a working way home, and a matching tab title
+  await page.goto('/no-such-page');
+  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible();
+  await expect(page).toHaveTitle(/Page not found/);
+  await page.getByRole('link', { name: 'Go to the home page' }).click();
+  await expect(page).toHaveURL('/');
+  await expect(page).toHaveTitle(/compare what you actually pay/);
+
+  // Keyboard: the first Tab stop is the skip link
+  await page.goto('/about');
+  await page.goto('/');
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
+
+  // Keyboard: a sheet closes with Escape and returns focus; Tab stays inside it
+  await page.goto('/food/jollibee');
+  await page.getByRole('button', { name: 'Add 1pc Chickenjoy', exact: true }).click();
+  await page.evaluate(() => window.scrollTo(0, 400)); // a new page must start at the top, not mid-scroll
+  await page.getByRole('link', { name: /Compare 4 apps/ }).click();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  const trigger = page.getByRole('button', { name: /Offers are checked for/ });
+  await trigger.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  for (let i = 0; i < 25; i++) await page.keyboard.press('Tab');
+  expect(await page.evaluate(() => !!document.activeElement?.closest('[role="dialog"]')), 'focus escaped the sheet').toBe(true);
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(trigger).toBeFocused();
+
+  expect(crashes, 'page errors').toEqual([]);
 });

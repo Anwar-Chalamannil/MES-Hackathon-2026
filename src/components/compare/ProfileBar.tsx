@@ -25,7 +25,6 @@ export default function ProfileBar({ scenario }: { scenario: Scenario }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Change payment and profile"
         className="flex min-h-12 w-full items-center gap-3 rounded-card border border-line bg-surface px-3 py-2 text-left active:bg-brand-soft"
       >
         <SlidersHorizontal size={20} className="shrink-0 text-brand" aria-hidden="true" />

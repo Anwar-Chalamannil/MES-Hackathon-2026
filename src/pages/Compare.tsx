@@ -14,7 +14,7 @@ import EmptyState from '../components/ui/EmptyState';
 import type { Scenario } from '../engine/types';
 import { useComparison } from '../hooks/useComparison';
 import { useAppStore } from '../store/useAppStore';
-import Placeholder from './Placeholder';
+import NotFound from './NotFound';
 
 const SCENARIOS: Record<Scenario, { title: string; shopPath: string }> = {
   food: { title: 'Food delivery', shopPath: '/food' },
@@ -24,7 +24,7 @@ const SCENARIOS: Record<Scenario, { title: string; shopPath: string }> = {
 
 export default function Compare() {
   const { scenario } = useParams();
-  if (scenario !== 'food' && scenario !== 'grocery' && scenario !== 'pharmacy') return <Placeholder title="Page not found" />;
+  if (scenario !== 'food' && scenario !== 'grocery' && scenario !== 'pharmacy') return <NotFound />;
   return <CompareScenario scenario={scenario} />;
 }
 
@@ -84,7 +84,7 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
       {(comparison.singlePlatform ? comparison.ranked : rest).length > 0 && (
         <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {(comparison.singlePlatform ? comparison.ranked : rest).map((o) => (
-            <li key={o.listingId}><OfferCard offer={o} cheapestDh={cheapestDh} mode={mode} /></li>
+            <li key={o.listingId} className="min-w-0"><OfferCard offer={o} cheapestDh={cheapestDh} mode={mode} /></li>
           ))}
         </ul>
       )}

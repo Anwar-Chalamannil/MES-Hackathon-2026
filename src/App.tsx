@@ -6,7 +6,7 @@ import Food from './pages/Food';
 import FoodMenu from './pages/FoodMenu';
 import Home from './pages/Home';
 import Expiry from './pages/Expiry';
-import Placeholder from './pages/Placeholder';
+import NotFound from './pages/NotFound';
 import ScenarioShop from './pages/ScenarioShop';
 import { EditVoucher, NewVoucher } from './pages/VoucherEdit';
 import Wallet from './pages/Wallet';
@@ -26,7 +26,7 @@ export default function App() {
         <Route path="wallet/:id" element={<EditVoucher />} />
         <Route path="expiry" element={<Expiry />} />
         <Route path="about" element={<About />} />
-        <Route path="*" element={<Placeholder title="Page not found" />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

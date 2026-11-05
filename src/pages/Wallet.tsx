@@ -77,7 +77,7 @@ export default function Wallet() {
       ) : (
         <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {shown.map((p) => (
-            <li key={p.id}>
+            <li key={p.id} className="min-w-0">
               <VoucherCard
                 promo={p}
                 status={statusFor(p, tab === 'saved' || tab === 'auto')}

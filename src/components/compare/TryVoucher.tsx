@@ -50,7 +50,7 @@ export default function TryVoucher({ scenario }: { scenario: Scenario }) {
                 <p className="text-[14px] leading-snug">{p.summary}</p>
               </div>
               {added ? (
-                <Button variant="secondary" aria-label={`Remove ${name}`} onClick={() => unsaveSeed(p.id)}>
+                <Button variant="secondary" aria-label={`Added ${name}. Press to remove`} onClick={() => unsaveSeed(p.id)}>
                   <Check size={16} aria-hidden="true" /> Added
                 </Button>
               ) : (

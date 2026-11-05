@@ -20,6 +20,48 @@ export function initialState(now: number = Date.now()): PersistedState {
   };
 }
 
+const SCENARIOS: Scenario[] = ['food', 'grocery', 'pharmacy'];
+const isStr = (x: unknown): x is string => typeof x === 'string';
+const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+const oneOf = (x: unknown, list: readonly string[]) => isStr(x) && list.includes(x);
+const strArray = (x: unknown) => Array.isArray(x) && x.every(isStr);
+
+function validBasket(b: unknown, scenario: Scenario): boolean {
+  return (
+    isObj(b) && b.scenario === scenario && Array.isArray(b.lines) &&
+    b.lines.every((l) => isObj(l) && isStr(l.productId) && Number.isInteger(l.qty) && (l.qty as number) >= 1 && (l.qty as number) <= MAX_QTY)
+  );
+}
+function validCustom(c: unknown): boolean {
+  if (!isObj(c)) return false;
+  const expiry = isObj(c.conditions) ? c.conditions.expiry : undefined;
+  return (
+    isStr(c.id) && isStr(c.platformId) && isStr(c.name) && c.origin === 'user' && oneOf(c.kind, ['code', 'bank']) &&
+    isObj(c.benefit) && isStr(c.benefit.type) && isObj(c.stacking) &&
+    isObj(expiry) && (typeof expiry.relHours === 'number' || isStr(expiry.iso)) && strArray(c.verifyInApp)
+  );
+}
+
+/**
+ * Saved data from an older version, a bug or a person poking at storage can have the wrong shape.
+ * Anything that fails these checks is ignored and the app starts fresh instead of crashing.
+ */
+export function isValidPersisted(p: unknown): p is PersistedState {
+  if (!isObj(p) || !isObj(p.baskets) || !isObj(p.wallet) || !isObj(p.profile)) return false;
+  const pr = p.profile;
+  return (
+    SCENARIOS.every((s) => validBasket((p.baskets as Record<string, unknown>)[s], s)) &&
+    oneOf(p.activeScenario, SCENARIOS) &&
+    strArray(p.wallet.savedIds) && Array.isArray(p.wallet.custom) && p.wallet.custom.every(validCustom) &&
+    oneOf(pr.channel, ['card', 'apple_pay', 'cash']) &&
+    oneOf(pr.issuer, ['dukhan', 'qnb', 'lulu_cobrand', 'other']) &&
+    oneOf(pr.network, ['visa', 'mastercard']) &&
+    strArray(pr.memberships) && strArray(pr.firstOrderOn) &&
+    oneOf(p.sortMode, ['price', 'fastest', 'discount']) &&
+    typeof p.demoAnchor === 'number' && Number.isFinite(p.demoAnchor)
+  );
+}
+
 interface Actions {
   /** Adds one of a product. For food, a basket belongs to one restaurant: the UI asks before replacing it. */
   addItem: (scenario: Scenario, productId: string, merchantId?: string) => void;
@@ -129,6 +171,7 @@ export const useAppStore = create<AppState>()(
       storage: createJSONStorage(getStorage),
       // A different stored version means an old data shape: start fresh instead of crashing.
       migrate: () => initialState(),
+      merge: (persisted, current) => (isValidPersisted(persisted) ? { ...current, ...persisted } : current),
       partialize: (s): PersistedState => ({
         baskets: s.baskets,
         activeScenario: s.activeScenario,

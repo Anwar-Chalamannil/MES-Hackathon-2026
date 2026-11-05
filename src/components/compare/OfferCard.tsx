@@ -33,7 +33,7 @@ export default function OfferCard({
     <article
       data-testid={winner ? 'winner' : 'offer'}
       data-listing={offer.listingId}
-      className={`overflow-hidden rounded-card border bg-surface shadow-sm ${winner ? 'border-brand border-t-4' : 'border-line'}`}
+      className={`min-w-0 overflow-hidden rounded-card border bg-surface shadow-sm ${winner ? 'border-brand border-t-4' : 'border-line'}`}
     >
       <div className="space-y-3 p-4">
         <div className="flex items-start justify-between gap-2">

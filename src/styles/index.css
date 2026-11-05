@@ -12,7 +12,7 @@
   --color-muted: #6b625a;
   --color-line: #e8e1d8;
   --color-save: #0f7b55;
-  --color-warn: #b45309;
+  --color-warn: #a04508; /* 6.3:1 on white, 5.4:1 on its 10% tint */
   --color-fail: #b42318;
 
   --radius-card: 14px;

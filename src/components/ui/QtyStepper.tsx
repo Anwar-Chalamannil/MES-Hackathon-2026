@@ -2,7 +2,7 @@ import { Minus, Plus } from 'lucide-react';
 import { MAX_QTY } from '../../store/useAppStore';
 
 const btn =
-  'flex size-10 items-center justify-center rounded-full border border-line bg-surface text-brand active:bg-brand-soft disabled:opacity-40';
+  'flex size-11 items-center justify-center rounded-full border border-line bg-surface text-brand active:bg-brand-soft disabled:opacity-40';
 
 /** Quantity control. Decreasing from 1 removes the item (onChange(0)). */
 export default function QtyStepper({ qty, name, onChange }: { qty: number; name: string; onChange: (qty: number) => void }) {
