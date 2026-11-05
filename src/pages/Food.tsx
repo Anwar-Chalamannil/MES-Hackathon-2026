@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { catalog } from '../data/catalog';
 import MerchantCard from '../components/catalog/MerchantCard';
+import ScenarioTabs from '../components/catalog/ScenarioTabs';
 import EmptyState from '../components/ui/EmptyState';
 import SearchInput from '../components/ui/SearchInput';
 import { useAppStore } from '../store/useAppStore';
@@ -20,6 +21,7 @@ export default function Food() {
 
   return (
     <div className="space-y-4 pb-20">
+      <ScenarioTabs />
       <div>
         <h1 className="text-[24px] font-extrabold tracking-tight">Food delivery</h1>
         <p className="mt-1 text-[15px] text-muted">Pick a restaurant, add your meal, then compare the apps that deliver it.</p>

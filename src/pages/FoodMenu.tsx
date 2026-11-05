@@ -6,12 +6,10 @@ import { listingsOfMerchant, merchantById } from '../data/lookup';
 import BasketBar from '../components/basket/BasketBar';
 import BasketContent from '../components/basket/BasketContent';
 import ReplaceBasketDialog from '../components/basket/ReplaceBasketDialog';
-import CategoryChips from '../components/catalog/CategoryChips';
-import ProductRow from '../components/catalog/ProductRow';
+import ProductBrowse from '../components/catalog/ProductBrowse';
 import EmptyState from '../components/ui/EmptyState';
 import { ButtonLink } from '../components/ui/Button';
 import { PlatformDots } from '../components/ui/PlatformChip';
-import SearchInput from '../components/ui/SearchInput';
 import { platformName } from '../data/lookup';
 import { useAppStore } from '../store/useAppStore';
 
@@ -23,21 +21,12 @@ export default function FoodMenu() {
   const setQty = useAppStore((s) => s.setQty);
   const startBasket = useAppStore((s) => s.startBasket);
   const setActiveScenario = useAppStore((s) => s.setActiveScenario);
-  const [query, setQuery] = useState('');
-  const [category, setCategory] = useState<string | null>(null);
   const [pending, setPending] = useState<string | null>(null);
 
   useEffect(() => setActiveScenario('food'), [setActiveScenario]);
 
   const listings = useMemo(() => listingsOfMerchant(merchantId), [merchantId]);
   const items = useMemo(() => catalog.products.filter((p) => p.merchantId === merchantId), [merchantId]);
-  const categories = useMemo(() => [...new Set(items.map((p) => p.category))], [items]);
-  const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return items.filter(
-      (p) => (category === null || p.category === category) && (q === '' || `${p.name} ${p.description}`.toLowerCase().includes(q)),
-    );
-  }, [items, category, query]);
 
   if (!merchant || merchant.kind !== 'restaurant') {
     return (
@@ -77,26 +66,15 @@ export default function FoodMenu() {
           </p>
         </header>
 
-        <SearchInput value={query} onChange={setQuery} label={`Search the ${merchant.name} menu`} placeholder="Search the menu" />
-        <CategoryChips categories={categories} selected={category} onSelect={setCategory} />
-
-        {visible.length === 0 ? (
-          <EmptyState title="No items found" text="Try another search or category." />
-        ) : (
-          <ul className="space-y-2">
-            {visible.map((p) => (
-              <ProductRow
-                key={p.id}
-                product={p}
-                qty={basket.merchantId === merchantId ? (basket.lines.find((l) => l.productId === p.id)?.qty ?? 0) : 0}
-                onAdd={() => handleAdd(p.id)}
-                onQty={(q) => setQty('food', p.id, q)}
-                availableOn={listings.filter((l) => l.id in p.prices).length}
-                totalApps={listings.length}
-              />
-            ))}
-          </ul>
-        )}
+        <ProductBrowse
+          products={items}
+          qtyOf={(id) => (basket.merchantId === merchantId ? (basket.lines.find((l) => l.productId === id)?.qty ?? 0) : 0)}
+          onAdd={handleAdd}
+          onQty={(id, q) => setQty('food', id, q)}
+          availability={(p) => ({ on: listings.filter((l) => l.id in p.prices).length, total: listings.length })}
+          searchLabel={`Search the ${merchant.name} menu`}
+          searchPlaceholder="Search the menu"
+        />
         <p className="text-[12px] text-muted">
           Prices shown are the lowest across apps. Each app prices, charges fees and delivers differently, and that is what we compare.
         </p>

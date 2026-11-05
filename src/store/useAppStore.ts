@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware';
 import { DEFAULT_PROFILE, DEFAULT_SAVED_IDS } from '../data/defaults';
-import type { Basket, PersistedState, Profile, Scenario, SortMode } from '../engine/types';
+import type { Basket, PersistedState, Profile, Promotion, Scenario, SortMode } from '../engine/types';
 
 export const STORAGE_KEY = 'basketwise';
 export const MAX_QTY = 20;
@@ -34,6 +34,10 @@ interface Actions {
   /** Adds a seed voucher to the wallet / removes it. */
   saveSeed: (id: string) => void;
   unsaveSeed: (id: string) => void;
+  /** Your own vouchers. Only codes and bank offers are allowed (the optimiser relies on that). */
+  addCustom: (promo: Promotion) => void;
+  updateCustom: (promo: Promotion) => void;
+  deleteCustom: (id: string) => void;
   resetDemo: () => void;
 }
 
@@ -103,6 +107,19 @@ export const useAppStore = create<AppState>()(
         set((s) => (s.wallet.savedIds.includes(id) ? s : { wallet: { ...s.wallet, savedIds: [...s.wallet.savedIds, id] } })),
       unsaveSeed: (id) =>
         set((s) => ({ wallet: { ...s.wallet, savedIds: s.wallet.savedIds.filter((x) => x !== id) } })),
+
+      addCustom: (promo) =>
+        set((s) =>
+          promo.kind !== 'code' && promo.kind !== 'bank'
+            ? s
+            : { wallet: { ...s.wallet, custom: [...s.wallet.custom.filter((p) => p.id !== promo.id), { ...promo, origin: 'user' }] } },
+        ),
+      updateCustom: (promo) =>
+        set((s) => ({
+          wallet: { ...s.wallet, custom: s.wallet.custom.map((p) => (p.id === promo.id ? { ...promo, origin: 'user' } : p)) },
+        })),
+      deleteCustom: (id) =>
+        set((s) => ({ wallet: { ...s.wallet, custom: s.wallet.custom.filter((p) => p.id !== id) } })),
 
       resetDemo: () => set(initialState()),
     }),

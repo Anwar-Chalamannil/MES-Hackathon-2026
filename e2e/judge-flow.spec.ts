@@ -80,11 +80,66 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
   await expect(page.getByRole('button', { name: /Edit basket, 1 item/ })).toBeVisible();
 
   // No horizontal scrolling on any page
-  for (const path of ['/', '/food', '/food/jollibee', '/compare/food', '/about']) {
+  for (const path of ['/', '/food', '/food/jollibee', '/compare/food', '/grocery', '/pharmacy', '/wallet', '/wallet/new', '/expiry', '/about']) {
     await page.goto(path);
     const [scroll, width] = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth]);
     expect(scroll, `${path} overflows`).toBeLessThanOrEqual(width);
   }
+
+  expect(errors, 'console errors').toEqual([]);
+});
+
+test('wallet: add, edit and delete a voucher, and track expiry (all saved across reloads)', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  page.on('pageerror', (e) => errors.push(e.message));
+
+  await page.goto('/?reset=1');
+
+  // Validation: an empty form explains what to fix
+  await page.goto('/wallet/new');
+  await page.getByRole('button', { name: 'Save voucher' }).click();
+  await expect(page.getByRole('alert').first()).toContainText('Choose which app');
+
+  // Add a voucher
+  await page.getByLabel('App', { exact: true }).selectOption('talabat');
+  await page.getByLabel('Name', { exact: true }).fill('E2E voucher');
+  await page.getByLabel('Discount', { exact: true }).selectOption('fixed');
+  await page.getByLabel('Amount off (QAR)').fill('5');
+  await page.getByRole('button', { name: 'Save voucher' }).click();
+
+  const mine = page.getByTestId('voucher').filter({ hasText: 'Your voucher' });
+  await expect(mine).toContainText('E2E voucher');
+  await expect(mine).toContainText('QAR 5.00 off');
+
+  // Persistence
+  await page.reload();
+  await expect(mine).toContainText('E2E voucher');
+
+  // Edit
+  await mine.getByRole('link', { name: 'Edit' }).click();
+  await page.getByLabel('Name', { exact: true }).fill('E2E renamed');
+  await page.getByRole('button', { name: 'Save changes' }).click();
+  await expect(mine).toContainText('E2E renamed');
+
+  // It shows up in the expiry tracker with a countdown
+  await page.goto('/expiry');
+  await expect(page.getByTestId('expiry-row').filter({ hasText: 'E2E renamed' })).toContainText('Ends in');
+
+  // Expiry filters (seed vouchers expire relative to the first visit)
+  await page.getByRole('button', { name: /^Within 24 hours/ }).click();
+  await expect(page.getByTestId('expiry-row')).toHaveCount(3);
+  await page.getByRole('button', { name: /^Expired/ }).click();
+  await expect(page.getByTestId('expiry-row')).toHaveCount(3);
+  await expect(page.getByTestId('expiry-row').first()).toContainText('Expired');
+
+  // Delete (asks first), and it stays deleted after a reload
+  await page.goto('/wallet');
+  await page.getByRole('button', { name: 'Delete E2E renamed' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Delete', exact: true }).click();
+  await expect(page.getByTestId('voucher').filter({ hasText: 'Your voucher' })).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByTestId('voucher').filter({ hasText: 'Your voucher' })).toHaveCount(0);
 
   expect(errors, 'console errors').toEqual([]);
 });

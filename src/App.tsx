@@ -5,7 +5,11 @@ import Compare from './pages/Compare';
 import Food from './pages/Food';
 import FoodMenu from './pages/FoodMenu';
 import Home from './pages/Home';
+import Expiry from './pages/Expiry';
 import Placeholder from './pages/Placeholder';
+import ScenarioShop from './pages/ScenarioShop';
+import { EditVoucher, NewVoucher } from './pages/VoucherEdit';
+import Wallet from './pages/Wallet';
 
 export default function App() {
   return (
@@ -14,13 +18,13 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="food" element={<Food />} />
         <Route path="food/:merchantId" element={<FoodMenu />} />
-        <Route path="grocery" element={<Placeholder title="Groceries" phase="P7" />} />
-        <Route path="pharmacy" element={<Placeholder title="Pharmacy & care" phase="P7" />} />
+        <Route path="grocery" element={<ScenarioShop scenario="grocery" />} />
+        <Route path="pharmacy" element={<ScenarioShop scenario="pharmacy" />} />
         <Route path="compare/:scenario" element={<Compare />} />
-        <Route path="wallet" element={<Placeholder title="Voucher wallet" phase="P6" />} />
-        <Route path="wallet/new" element={<Placeholder title="New voucher" phase="P6" />} />
-        <Route path="wallet/:id" element={<Placeholder title="Edit voucher" phase="P6" />} />
-        <Route path="expiry" element={<Placeholder title="Voucher expiry" phase="P6" />} />
+        <Route path="wallet" element={<Wallet />} />
+        <Route path="wallet/new" element={<NewVoucher />} />
+        <Route path="wallet/:id" element={<EditVoucher />} />
+        <Route path="expiry" element={<Expiry />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<Placeholder title="Page not found" />} />
       </Route>
