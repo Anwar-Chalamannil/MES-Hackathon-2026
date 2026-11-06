@@ -26,7 +26,10 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
   await expect(heroFirst).toContainText('QAR 45.30');
   await expect(page.getByTestId('hero-explanation')).toContainText('Rafeeq has the lowest total');
 
-  await page.getByRole('link', { name: 'Compare your own basket' }).click();
+  // Compare now with empty baskets opens the hub, which starts shopping
+  await page.getByRole('link', { name: 'Compare now' }).click();
+  await expect(page).toHaveURL('/compare');
+  await page.getByRole('link', { name: 'Start shopping Restaurants' }).click();
   await page.getByRole('link', { name: /Jollibee/ }).click();
 
   // Build the hero basket: 2x 2pc Chickenjoy, 1x Jolly Spaghetti, 1x Regular Coke

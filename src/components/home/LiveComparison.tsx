@@ -78,7 +78,7 @@ export default function LiveComparison() {
   return (
     <div className="space-y-4">
       <p className="text-[15px] leading-snug">
-        <span className="text-muted">The same order at Jollibee: </span>
+        <span className="text-muted">The same Jollibee order: </span>
         <span className="font-semibold">2 × 2pc Chickenjoy, Jolly Spaghetti, Regular Coke</span>
       </p>
 
@@ -99,22 +99,24 @@ export default function LiveComparison() {
               key={o.listingId}
               data-id={o.listingId}
               data-testid="hero-tag"
-              className={`flex items-center gap-3 rounded-[6px] border px-4 py-2.5 lg:py-3.5 ${
-                winner ? 'border-win bg-win text-white' : 'border-line bg-surface text-ink'
+              className={`flex items-center gap-3 rounded-[14px] border px-3.5 py-2.5 ${
+                winner ? 'border-2 border-blue bg-surface text-ink shadow-card' : 'border-line bg-surface text-ink'
               }`}
             >
-              <span aria-hidden="true" className="size-3 shrink-0 rounded-full ring-2 ring-white/70" style={{ background: platform?.color }} />
+              <span aria-hidden="true" className="size-3 shrink-0 rounded-full "  style={{ background: platform?.color }} />
               <div className="min-w-0 flex-1">
-                <p className="font-display text-[20px] leading-tight font-bold lg:text-[24px]">{platform?.name}</p>
-                <p className={`truncate text-[13px] ${winner ? 'text-white/90' : 'text-muted'}`}>
+                <p className="text-[18px] leading-tight font-bold">{platform?.name}</p>
+                <p className="truncate text-[13px] text-muted">
                   {note || `${o.eta[0]}–${o.eta[1]} min`}
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-display text-[26px] leading-none font-extrabold tracking-tight lg:text-[32px]">{fmt(o.totalDh)}</p>
-                <p className={`mt-1 text-[13px] font-semibold ${winner ? 'text-white' : 'text-muted'}`}>
-                  {winner ? 'Pays least' : `+${fmt(o.totalDh - lowest)}`}
-                </p>
+                <p className="money text-[22px] leading-none font-extrabold tracking-tight">{fmt(o.totalDh)}</p>
+                {winner ? (
+                  <span className="mt-1 inline-block rounded-full bg-pink px-2.5 py-0.5 text-[12px] font-extrabold text-pink-ink">Pays least</span>
+                ) : (
+                  <p className="mt-1 text-[13px] font-semibold text-muted">{`+${fmt(o.totalDh - lowest)}`}</p>
+                )}
               </div>
             </li>
           );
@@ -131,7 +133,7 @@ export default function LiveComparison() {
               aria-pressed={on[t.key]}
               onClick={() => setOn((p) => ({ ...p, [t.key]: !p[t.key] }))}
               className={`flex min-h-11 items-center gap-2 rounded-full border px-4 text-[14px] font-semibold ${
-                on[t.key] ? 'border-brand bg-brand text-white' : 'border-line bg-surface text-ink active:bg-brand-soft'
+                on[t.key] ? 'border-brand bg-brand text-white' : 'border-control bg-surface text-ink active:bg-blue-50'
               }`}
             >
               {on[t.key] && <Check size={16} aria-hidden="true" />}
