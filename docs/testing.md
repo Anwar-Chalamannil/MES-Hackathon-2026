@@ -15,6 +15,7 @@ Owners: Sadiya and Arefa. Log what was tested, what happened, and what to fix.
 | 2026-11-06 | Claude (automated, desktop browser only) | Lighthouse mobile on Home, Menu, Grocery, Wallet, Expiry, About | Performance 99 to 100, Accessibility 100, Best Practices 100, SEO 100 (after adding favicon and robots.txt, fixing low-contrast text) | None open |
 | 2026-11-06 | Claude (automated, desktop browser only) | axe-core accessibility checks on Compare pages, forms and open sheets at 320, 390, 1280 px | 0 violations (fixed 2 issues: button names not matching visible text, notice outside a landmark) | None open |
 | 2026-11-06 | Claude (automated, desktop browser only) | 3 end-to-end journeys + 230 unit tests: judge path, wallet add/edit/delete + expiry, damaged saved data, 404, keyboard (skip link, Escape, focus stays in sheets), scroll to top | All pass | None open |
+| 2026-11-06 | Claude (automated) | R2 logic: store v2 with v1 migration, notifications (10 on a fresh device, 24h/72h/168h boundaries, 7-day expired cutoff), search, featured savings (equal engine output), demo basket loader | 322 unit tests and 3 e2e tests pass | None open |
 
 ## User feedback
 -

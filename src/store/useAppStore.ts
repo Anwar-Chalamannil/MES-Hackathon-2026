@@ -5,11 +5,15 @@ import type { Basket, PersistedState, Profile, Promotion, Scenario, SortMode } f
 
 export const STORAGE_KEY = 'basketwise';
 export const MAX_QTY = 20;
+export const STORE_VERSION = 2;
+
+/** Version 2 adds the ids of in-app notifications the person has already read. */
+export type StoredState = PersistedState & { readNotificationIds: string[] };
 
 const emptyBasket = (scenario: Scenario): Basket => ({ scenario, lines: [] });
 
 /** Fresh state. demoAnchor is the moment seed promotion countdowns are measured from. */
-export function initialState(now: number = Date.now()): PersistedState {
+export function initialState(now: number = Date.now()): StoredState {
   return {
     baskets: { food: emptyBasket('food'), grocery: emptyBasket('grocery'), pharmacy: emptyBasket('pharmacy') },
     activeScenario: 'food',
@@ -17,6 +21,7 @@ export function initialState(now: number = Date.now()): PersistedState {
     profile: { ...DEFAULT_PROFILE, memberships: [...DEFAULT_PROFILE.memberships], firstOrderOn: [...DEFAULT_PROFILE.firstOrderOn] },
     sortMode: 'price',
     demoAnchor: now,
+    readNotificationIds: [],
   };
 }
 
@@ -47,6 +52,8 @@ function validCustom(c: unknown): boolean {
  * Anything that fails these checks is ignored and the app starts fresh instead of crashing.
  */
 export function isValidPersisted(p: unknown): p is PersistedState {
+  // Version 1 had no readNotificationIds; if present (version 2) it must be a list of text.
+  if (isObj(p) && 'readNotificationIds' in p && !strArray(p.readNotificationIds)) return false;
   if (!isObj(p) || !isObj(p.baskets) || !isObj(p.wallet) || !isObj(p.profile)) return false;
   const pr = p.profile;
   return (
@@ -60,6 +67,12 @@ export function isValidPersisted(p: unknown): p is PersistedState {
     oneOf(p.sortMode, ['price', 'fastest', 'discount']) &&
     typeof p.demoAnchor === 'number' && Number.isFinite(p.demoAnchor)
   );
+}
+
+/** Turns saved version 1 data into version 2. Anything unreadable starts fresh. */
+export function migratePersisted(persisted: unknown, version: number): StoredState {
+  if (version === 1 && isValidPersisted(persisted)) return { ...persisted, readNotificationIds: [] };
+  return initialState();
 }
 
 interface Actions {
@@ -81,9 +94,14 @@ interface Actions {
   updateCustom: (promo: Promotion) => void;
   deleteCustom: (id: string) => void;
   resetDemo: () => void;
+  /** Notifications: ids look like `${promoId}@${stage}`. */
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: (ids: string[]) => void;
+  /** Forgets read ids that no longer match any current notification. */
+  pruneReadNotifications: (currentIds: string[]) => void;
 }
 
-export type AppState = PersistedState & Actions;
+export type AppState = StoredState & Actions;
 
 // localStorage can be missing or throw (private windows, blocked storage). Fall back to memory.
 const memory = new Map<string, string>();
@@ -164,21 +182,38 @@ export const useAppStore = create<AppState>()(
         set((s) => ({ wallet: { ...s.wallet, custom: s.wallet.custom.filter((p) => p.id !== id) } })),
 
       resetDemo: () => set(initialState()),
+
+      markNotificationRead: (id) =>
+        set((s) => (s.readNotificationIds.includes(id) ? s : { readNotificationIds: [...s.readNotificationIds, id] })),
+      markAllNotificationsRead: (ids) =>
+        set((s) => {
+          const add = ids.filter((id) => !s.readNotificationIds.includes(id));
+          return add.length === 0 ? s : { readNotificationIds: [...s.readNotificationIds, ...add] };
+        }),
+      pruneReadNotifications: (currentIds) =>
+        set((s) => {
+          const keep = s.readNotificationIds.filter((id) => currentIds.includes(id));
+          return keep.length === s.readNotificationIds.length ? s : { readNotificationIds: keep };
+        }),
     }),
     {
       name: STORAGE_KEY,
-      version: 1,
+      version: STORE_VERSION,
       storage: createJSONStorage(getStorage),
-      // A different stored version means an old data shape: start fresh instead of crashing.
-      migrate: () => initialState(),
-      merge: (persisted, current) => (isValidPersisted(persisted) ? { ...current, ...persisted } : current),
-      partialize: (s): PersistedState => ({
+      // Version 1 data is carried over; any other shape starts fresh instead of crashing.
+      migrate: (persisted, version) => migratePersisted(persisted, version),
+      merge: (persisted, current) =>
+        isValidPersisted(persisted)
+          ? { ...current, ...persisted, readNotificationIds: (persisted as Partial<StoredState>).readNotificationIds ?? [] }
+          : current,
+      partialize: (s): StoredState => ({
         baskets: s.baskets,
         activeScenario: s.activeScenario,
         wallet: s.wallet,
         profile: s.profile,
         sortMode: s.sortMode,
         demoAnchor: s.demoAnchor,
+        readNotificationIds: s.readNotificationIds,
       }),
     },
   ),
