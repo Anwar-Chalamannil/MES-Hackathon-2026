@@ -6,6 +6,7 @@ import { listingsOfMerchant, merchantById } from '../data/lookup';
 import type { Product } from '../engine/types';
 import ReplaceBasketDialog from '../components/basket/ReplaceBasketDialog';
 import ProductRow from '../components/catalog/ProductRow';
+import MerchantLogo from '../components/media/MerchantLogo';
 import EmptyState from '../components/ui/EmptyState';
 import { PlatformDots } from '../components/ui/PlatformChip';
 import { hasResults, search, SEARCH_SUGGESTIONS } from '../lib/search';
@@ -119,7 +120,7 @@ export default function Search() {
                 {results.restaurants.map((m) => (
                   <li key={m.id}>
                     <Link to={`/food/${m.id}`} className="flex min-h-16 items-center gap-3 rounded-card border border-line bg-surface p-3 active:bg-blue-50">
-                      <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-[12px] bg-blue-50 text-[18px] font-extrabold text-brand">{m.name.charAt(0)}</span>
+                      <MerchantLogo merchant={m} size={48} />
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-bold">{m.name}</span>
                         <span className="flex items-center gap-2 text-[13px] text-muted">

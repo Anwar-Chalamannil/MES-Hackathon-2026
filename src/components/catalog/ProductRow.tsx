@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react';
 import type { Product } from '../../engine/types';
 import Money from '../ui/Money';
+import ProductThumb from '../media/ProductThumb';
 import QtyStepper from '../ui/QtyStepper';
 
 /** One selectable product. `availableOn`/`totalApps` explain why a product may be missing on some apps. */
@@ -18,6 +19,7 @@ export default function ProductRow({
   const detail = [product.brand, product.size, product.variant].filter(Boolean).join(', ');
   return (
     <li className="flex items-center gap-3 rounded-card border border-line bg-surface p-3">
+      <ProductThumb product={product} size={72} />
       <div className="min-w-0 flex-1">
         <p className="line-clamp-2 text-[16px] font-bold leading-snug">{product.name}</p>
         <p className="truncate text-[13px] text-muted">{detail || product.description}</p>

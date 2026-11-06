@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { ChevronRight, Clock } from 'lucide-react';
 import { listingsOfMerchant } from '../../data/lookup';
 import type { Merchant } from '../../engine/types';
+import MerchantLogo from '../media/MerchantLogo';
 import { PlatformDots } from '../ui/PlatformChip';
 
 export default function MerchantCard({ merchant }: { merchant: Merchant }) {
@@ -15,9 +16,7 @@ export default function MerchantCard({ merchant }: { merchant: Merchant }) {
       to={`/food/${merchant.id}`}
       className="flex min-h-20 items-center gap-3 rounded-card border border-line bg-surface p-3 active:bg-brand-soft"
     >
-      <span aria-hidden="true" className="flex size-14 shrink-0 items-center justify-center rounded-[12px] bg-brand-soft text-[20px] font-extrabold text-brand">
-        {merchant.name.charAt(0)}
-      </span>
+      <MerchantLogo merchant={merchant} size={56} />
       <span className="min-w-0 flex-1">
         <span className="block truncate text-[17px] font-bold">{merchant.name}</span>
         <span className="block truncate text-[14px] text-muted">{merchant.cuisine}</span>
