@@ -11,16 +11,37 @@ Innovation · Problem understanding · Potential impact · Technical execution �
 - Repo: https://github.com/Anwar-Chalamannil/MES-Hackathon-2026
 - Event: meshackathon.com · info@meshackathon.com
 
+## What Perq is
+Perq is a mobile-first web app for Qatar that compares the same basket across delivery apps and stores and shows the **final payable amount** (item prices, delivery, service and small-order fees, sale prices, eligible vouchers). All prices, fees and vouchers are **simulated demo data, not affiliated with the brands shown**. No backend, no accounts.
+
+Hero example (Jollibee: 2 x 2pc Chickenjoy, Jolly Spaghetti, Regular Coke): Keeta QAR 58.00, Snoonu 60.00, Rafeeq 61.50, Talabat 63.00. With voucher DEMO-TB20 Talabat drops to 52.60, and with a Dukhan Bank Visa Signature card (paid by card) Rafeeq drops to 45.30 (source: `src/data/demoScenarios.ts`).
+
+## Features (all live at https://perq-qatar.vercel.app/, commit `125f4d8`, 6 Nov 2026)
+- **Smart Basket Comparison** for restaurants, groceries, and pharmacy and personal care (one shared engine).
+- **Voucher Wallet and Eligibility Checker:** save, add your own, edit, delete, and see why each voucher applies or not.
+- **Benefit-first vouchers:** every voucher is titled by what you get ("QAR 10 OFF", "20% OFF", "Free Delivery"); the cap sits underneath ("Up to QAR 15"), and the code is small below it with a **Copy code** button. Demo codes say they will not work in the real app. Automatic offers and sales never show a code.
+- **Smart Sorting:** **Best price** and **Fastest**. ("Biggest discount" was removed from the UI; discount amounts still show on every card.)
+- **Choose your cards and Settings > My cards:** pick real Qatar card plans from a list (for example Dukhan Bank Visa Signature, QNB Life Rewards Visa Infinite, Doha Bank LuLu Platinum Mastercard). No card numbers are ever asked for. Perq tries every saved card and keeps the best result; card-only offers say whether your card matches in the demo data.
+- **Shopping guide (Guided Checkout):** after comparing, "Shop at {app}" opens a checklist of items to add, vouchers to use (with codes to copy), what applies automatically, the estimated total and a verified link to the app. Perq does **not** place orders or take payment: no public customer-order API exists on any of the nine platforms.
+- **Voucher Expiry Tracker and in-app alerts** (7 days, 3 days, 24 hours, expired), shown while Perq is open.
+- **Dashboard** (Home, categories, featured savings, live comparison) and a responsive, mobile-first UI.
+- Perq brand, Doha hero photo, merchant and platform logos, product and dish photos with credits.
+
+## Still to do
+- Real-phone test on Android and iPhone via the QR code (Sadiya, Arefa), logged in `docs/testing.md`.
+- Fill `docs/01-challenge-brief.md` and `docs/02-research.md` (still templates).
+- Rehearse the pitch under 3 minutes.
+
 ## Status
-- [x] Empty page deployed to Vercel; repo connected (pushing to `main` redeploys).
-- [ ] Challenge revealed and written into `docs/01-challenge-brief.md` (Thu ~6:55 PM)
-- [ ] Research done
-- [ ] Product spec agreed (must-haves and cut list)
-- [ ] Tech plan approved
-- [ ] MVP working end to end
-- [ ] Tested on a phone and the live site
-- [ ] Pitch deck done and rehearsed under 3 minutes
+- [x] Vercel project connected; pushing to `main` redeploys (ask Fadhil before every push).
+- [ ] Challenge text pasted into `docs/01-challenge-brief.md` and research written in `docs/02-research.md` (both still templates).
+- [x] Product spec agreed (`docs/03-product-spec.md`), tech plan approved (`docs/04-tech-plan.md`).
+- [x] MVP, v3 redesign, images and rebrand, and v5 (sorting, vouchers, cards, Shopping guide) live.
+- [x] Automated tests: 375 unit and 50 end-to-end tests pass; axe 0 violations on all main routes at 320, 390 and 1280px (`docs/testing.md`).
+- [ ] Tested on a real Android phone and iPhone via the QR code (Sadiya, Arefa)
+- [x] Pitch deck: `pitch/Perq-MES-2026-pitch.pptx` (editable); [ ] rehearsed under 3 minutes
 - [ ] Backups saved (slides and project) and submitted per organisers' instructions
+- [x] Promo and fallback videos made (`brag-output-2026-11-06-192040/brag.mp4` shows the v5 features). They are gitignored, so keep copies elsewhere.
 
 ## Team
 | Person | Responsibility |
@@ -44,9 +65,9 @@ Principles: problem first · MVP first · incremental · reliable testing · goo
 |---|---|
 | `README.md` | This overview, for the whole team |
 | `CLAUDE.md` | Standing instructions for Claude Code |
-| `docs/` | Brief, research, spec, tech plan, decisions, testing |
-| `pitch/` | Pitch outline and 3-minute script |
-| `index.html` | The live page (empty until the build starts) |
+| `docs/` | Brief, research, spec, tech plan, decisions, testing, food photo shortlist |
+| `pitch/` | Pitch deck (`Perq-MES-2026-pitch.pptx`), outline, script and the QR code (`qr.png`) |
+| `src/`, `e2e/` | The Perq app (React) and its tests; `index.html` is the Vite entry |
 
 ## Pitch rules
 - Pitch deck required (template provided at the event; follow organisers' submission instructions).
