@@ -56,7 +56,7 @@ export default function Wallet() {
       />
 
       {tab === 'saved' && (
-        <ButtonLink to="/wallet/new" variant="secondary" className="w-full sm:w-auto">
+        <ButtonLink to="/vouchers/new" variant="secondary" className="w-full sm:w-auto">
           <Plus size={18} aria-hidden="true" /> Add your own voucher
         </ButtonLink>
       )}
@@ -80,6 +80,7 @@ export default function Wallet() {
             <li key={p.id} className="min-w-0">
               <VoucherCard
                 promo={p}
+                detailLink
                 status={statusFor(p, tab === 'saved' || tab === 'auto')}
                 nowMs={nowMs}
                 anchorMs={anchorMs}
@@ -87,7 +88,7 @@ export default function Wallet() {
                   tab === 'saved' ? (
                     p.origin === 'user' ? (
                       <>
-                        <ButtonLink to={`/wallet/${p.id}`} variant="secondary"><Pencil size={16} aria-hidden="true" /> Edit</ButtonLink>
+                        <ButtonLink to={`/vouchers/${p.id}/edit`} variant="secondary"><Pencil size={16} aria-hidden="true" /> Edit</ButtonLink>
                         <Button variant="secondary" onClick={() => setToDelete(p)} aria-label={`Delete ${p.name}`}>
                           <Trash2 size={16} aria-hidden="true" /> Delete
                         </Button>

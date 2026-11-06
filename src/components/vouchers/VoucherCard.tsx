@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { Link } from 'react-router';
 import { AlertTriangle, Check, ChevronDown, Info, X } from 'lucide-react';
 import { resolveExpiry } from '../../engine/time';
 import type { Promotion } from '../../engine/types';
@@ -23,15 +24,18 @@ const tag = 'rounded-full px-2 py-0.5 text-[12px] font-bold';
  * for the current basket. "Why?" opens the full eligibility checks.
  */
 export default function VoucherCard({
-  promo, status, nowMs, anchorMs, actions,
+  promo, status, nowMs, anchorMs, actions, detailLink = false, defaultOpen = false,
 }: {
   promo: Promotion;
   status: PromoStatus;
   nowMs: number;
   anchorMs: number;
   actions?: ReactNode;
+  /** Make the title open the voucher page. Off on the voucher page itself. */
+  detailLink?: boolean;
+  defaultOpen?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const expiryMs = resolveExpiry(promo.conditions.expiry, anchorMs);
   const expired = expiryMs <= nowMs;
   const { Icon, cls } = STATE_STYLE[status.state];
@@ -58,7 +62,13 @@ export default function VoucherCard({
         {status.best && <span className={`${tag} bg-save/10 text-save`}>Best for your basket</span>}
       </div>
 
-      <p className="mt-3 text-[22px] leading-tight font-extrabold">{describeBenefit(promo)}</p>
+      <p className="mt-3 text-[22px] leading-tight font-extrabold">
+        {detailLink ? (
+          <Link to={`/vouchers/${promo.id}`} className="underline-offset-4 hover:underline">{describeBenefit(promo)}</Link>
+        ) : (
+          describeBenefit(promo)
+        )}
+      </p>
       <p className="mt-0.5 text-[15px] font-semibold">{promo.name}</p>
       <p className="mt-0.5 text-[13px] text-muted">{promo.summary}</p>
 

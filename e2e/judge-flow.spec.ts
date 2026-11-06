@@ -190,6 +190,7 @@ test('resilience: damaged saved data, unknown page, and keyboard use', async ({ 
   // Keyboard: the first Tab stop is the skip link
   await page.goto('/about');
   await page.goto('/');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible(); // wait until the page has rendered
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
 

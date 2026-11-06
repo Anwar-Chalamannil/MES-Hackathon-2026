@@ -38,7 +38,7 @@ export default function ProductRow({
           type="button"
           onClick={onAdd}
           aria-label={`Add ${product.name}`}
-          className="flex min-h-11 items-center gap-1 rounded-btn bg-brand px-4 text-[15px] font-bold text-white active:bg-[#6f102d]"
+          className="flex min-h-11 items-center gap-1 rounded-btn bg-brand px-4 text-[15px] font-bold text-white active:bg-blue-800"
         >
           <Plus size={18} aria-hidden="true" /> Add
         </button>

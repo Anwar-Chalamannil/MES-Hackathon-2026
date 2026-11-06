@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import { catalog } from '../data/catalog';
 import { resolveExpiry } from '../engine/time';
 import type { Promotion } from '../engine/types';
@@ -60,7 +61,7 @@ export default function Expiry() {
           title={saved.length === 0 ? 'No saved vouchers' : 'No vouchers match'}
           text={saved.length === 0 ? 'Save a voucher in the wallet to track when it expires.' : 'Try another filter.'}
         >
-          {saved.length === 0 && <ButtonLink to="/wallet">Open wallet</ButtonLink>}
+          {saved.length === 0 && <ButtonLink to="/vouchers">Open vouchers</ButtonLink>}
         </EmptyState>
       ) : (
         <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -70,7 +71,9 @@ export default function Expiry() {
                 <PlatformChip platformId={p.platformId} />
                 {p.code && <code className="rounded bg-brand-soft px-1.5 py-0.5 text-[12px] font-bold text-brand">{p.code}</code>}
               </div>
-              <p className="mt-2 text-[17px] leading-tight font-extrabold">{describeBenefit(p)}</p>
+              <p className="mt-2 text-[17px] leading-tight font-extrabold">
+                <Link to={`/vouchers/${p.id}`} className="underline-offset-4 hover:underline">{describeBenefit(p)}</Link>
+              </p>
               <p className="text-[14px] text-muted">{p.name}</p>
               <div className="mt-3"><ExpiryBadge expiryMs={expiryMs} nowMs={nowMs} /></div>
             </li>

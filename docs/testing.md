@@ -16,6 +16,7 @@ Owners: Sadiya and Arefa. Log what was tested, what happened, and what to fix.
 | 2026-11-06 | Claude (automated, desktop browser only) | axe-core accessibility checks on Compare pages, forms and open sheets at 320, 390, 1280 px | 0 violations (fixed 2 issues: button names not matching visible text, notice outside a landmark) | None open |
 | 2026-11-06 | Claude (automated, desktop browser only) | 3 end-to-end journeys + 230 unit tests: judge path, wallet add/edit/delete + expiry, damaged saved data, 404, keyboard (skip link, Escape, focus stays in sheets), scroll to top | All pass | None open |
 | 2026-11-06 | Claude (automated) | R2 logic: store v2 with v1 migration, notifications (10 on a fresh device, 24h/72h/168h boundaries, 7-day expired cutoff), search, featured savings (equal engine output), demo basket loader | 322 unit tests and 3 e2e tests pass | None open |
+| 2026-11-06 | Claude (automated) | R3 shell and routes: 4 bottom tabs with badges, ☰ menu, desktop sidebar and header search, Alerts page (10 on a fresh device, read state survives reload), search, compare hub, voucher pages, old-link redirects, overflow at 320px | 322 unit tests and 13 e2e tests pass | None open |
 
 ## User feedback
 -

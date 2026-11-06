@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 /**
  * Bottom sheet on phones, centred panel on larger screens. Closes on Escape or backdrop tap,
@@ -52,7 +53,8 @@ export default function Sheet({
   }, [open, onClose]);
 
   if (!open) return null;
-  return (
+  // Rendered on <body> so no parent stacking context (like the sticky header) can put the tab bar above it.
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
       <div className="absolute inset-0 bg-black/40" onClick={onClose} aria-hidden="true" />
       <div
@@ -71,6 +73,7 @@ export default function Sheet({
         </div>
         <div className="overflow-y-auto px-4 py-4 pb-[calc(16px+env(safe-area-inset-bottom))]">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

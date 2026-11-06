@@ -11,9 +11,10 @@ export function pageName(pathname: string): string {
     case 'food': return second ? (merchantById.get(second)?.name ?? 'Restaurant') : 'Food delivery';
     case 'grocery': return 'Groceries';
     case 'pharmacy': return 'Pharmacy & care';
-    case 'compare': return `Compare ${SCENARIO_TITLE[second ?? ''] ?? ''}`.trim();
-    case 'wallet': return second === 'new' ? 'Add a voucher' : second ? 'Edit voucher' : 'Voucher wallet';
-    case 'expiry': return 'Expiry tracker';
+    case 'search': return 'Search';
+    case 'notifications': return 'Alerts';
+    case 'vouchers': return second === 'new' ? 'Add a voucher' : second === 'expiry' ? 'Expiry tracker' : second ? 'Voucher' : 'Vouchers';
+    case 'compare': return second ? `Compare ${SCENARIO_TITLE[second] ?? ''}`.trim() : 'Compare';
     case 'about': return 'About';
     default: return 'Page not found';
   }

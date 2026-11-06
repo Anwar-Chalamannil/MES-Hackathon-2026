@@ -148,7 +148,7 @@ export default function VoucherForm({
 
       <div className="flex gap-2 pt-1">
         <Button variant="secondary" className="flex-1" onClick={onCancel}>Cancel</Button>
-        <button type="submit" className="inline-flex min-h-11 flex-1 items-center justify-center rounded-btn bg-brand px-4 text-[15px] font-bold text-white active:bg-[#6f102d]">
+        <button type="submit" className="inline-flex min-h-11 flex-1 items-center justify-center rounded-btn bg-brand px-4 text-[15px] font-bold text-white active:bg-blue-800">
           {submitLabel}
         </button>
       </div>

@@ -17,8 +17,8 @@ export default function WalletTabs() {
   };
   return (
     <nav aria-label="Wallet sections" className="grid grid-cols-2 gap-1 rounded-card border border-line bg-surface p-1">
-      {tab('/wallet', 'Vouchers')}
-      {tab('/expiry', 'Expiry tracker')}
+      {tab('/vouchers', 'Vouchers')}
+      {tab('/vouchers/expiry', 'Expiry tracker')}
     </nav>
   );
 }

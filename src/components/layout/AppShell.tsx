@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
+import AppHeader from './AppHeader';
 import BottomNav from './BottomNav';
 import ErrorBoundary from './ErrorBoundary';
 import { pageName, pageTitle } from './pageTitle';
 import SimulatedBanner from './SimulatedBanner';
-import TopNav from './TopNav';
+import Sidebar from './Sidebar';
 
 export default function AppShell() {
   const { pathname } = useLocation();
@@ -25,20 +26,21 @@ export default function AppShell() {
   }, [pathname]);
 
   return (
-    <div className="min-h-dvh">
+    <div className="min-h-dvh lg:pl-[248px]">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-btn focus:bg-brand focus:px-4 focus:py-3 focus:font-bold focus:text-white"
       >
         Skip to content
       </a>
-      <TopNav />
+      <Sidebar />
+      <AppHeader />
       <SimulatedBanner />
       <main
         id="main"
         ref={main}
         tabIndex={-1}
-        className="mx-auto max-w-[1120px] px-4 pt-6 pb-[calc(88px+env(safe-area-inset-bottom))] outline-none lg:pb-12"
+        className="mx-auto max-w-[1120px] px-4 pt-6 lg:px-8 pb-[calc(88px+env(safe-area-inset-bottom))] outline-none lg:pb-12"
       >
         <ErrorBoundary key={pathname}>
           <Outlet />
