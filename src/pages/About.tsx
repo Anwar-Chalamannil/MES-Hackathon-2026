@@ -48,6 +48,21 @@ export default function About() {
         </p>
       </section>
 
+      <section className="space-y-2" aria-labelledby="ordering-title">
+        <h2 id="ordering-title" className="text-[17px] font-extrabold">Ordering, cards and privacy</h2>
+        <p className="text-[15px] leading-relaxed text-muted">
+          Perq does not place orders. After you compare, the Shopping guide lists what to add, which vouchers to use and the estimated
+          total, then links to the app so you can order there yourself. We found no public way for another app to place a customer
+          order or fill a basket on Talabat, Snoonu, Rafeeq, Keeta, Ninja, Carrefour, Lulu, Kulud or Wellcare, so real in-app ordering
+          would need a partnership with each of them.
+        </p>
+        <p className="text-[15px] leading-relaxed text-muted">
+          When you choose your cards, you pick a plan from a list. We store only which plan you chose, on this device. We never ask for
+          card numbers, expiry dates or CVVs. Card offers are matched on bank, network and tier in our demo data, so always check the
+          terms in the app. Links to other apps are ordinary public pages; Perq is not affiliated with them.
+        </p>
+      </section>
+
       <section className="space-y-2">
         <h2 className="text-[17px] font-extrabold">What we looked at</h2>
         <p className="text-[14px] text-muted">

@@ -34,7 +34,7 @@ Dependency-based phases, no dates:
 - [ ] P9 Release and QR check
 
 ## Risks and fallbacks
-- Misleading comparisons: incomplete baskets are never ranked; biggest discount shows the price gap.
+- Misleading comparisons: incomplete baskets are never ranked; discount amounts show on every card.
 - Voucher edge cases: covered by unit tests, including rejections.
 - Unverified prices: everything is labelled simulated; research upgrades provenance only when a page is read directly.
 - Deploy mistakes: wrong Vercel preset or SPA 404s; fixed in P1 with `vercel.json`.

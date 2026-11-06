@@ -17,7 +17,7 @@ BasketWise compares the same basket across the apps that can deliver it and show
 ## Must-haves (MVP)
 - Smart Basket Comparison: restaurants, groceries, pharmacy and personal care (one shared engine).
 - Voucher Wallet and Eligibility Checker (save, edit, delete, explain why).
-- Smart Sorting: Best Price, Fastest Delivery, Biggest Discount.
+- Smart Sorting: Best Price and Fastest Delivery (Biggest Discount was removed on 6 Nov 2026; discount amounts still show on every card).
 - Voucher Expiry Tracker (24h, 3 days, 7 days, Qatar time).
 - Dashboard and mobile-first UX, local persistence.
 

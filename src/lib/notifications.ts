@@ -1,6 +1,7 @@
 import { catalog } from '../data/catalog';
 import { expiryBucket, resolveExpiry } from '../engine/time';
 import type { Promotion, Wallet } from '../engine/types';
+import { promoShortTitle } from './promoDisplay';
 
 const HOUR = 3_600_000;
 const DAY = 24 * HOUR;
@@ -53,13 +54,13 @@ export function buildNotifications(wallet: Wallet, anchorMs: number, nowMs: numb
     if (bucket === 'later') continue;
     if (bucket === 'expired' && nowMs - expiryMs > EXPIRED_ALERT_WINDOW_MS) continue;
     const stage: NotificationStage = bucket;
-    const label = promo.code ?? promo.name;
+    // Benefit first: "30% OFF at Rafeeq expires within 3 days"; the code moves to the message line.
     out.push({
       id: `${promo.id}@${stage}`,
       promoId: promo.id,
       stage,
-      title: `${label} ${STAGE_TEXT[stage]}`,
-      message: `${platformName(promo.platformId)}: ${promo.name}`,
+      title: `${promoShortTitle(promo, platformName(promo.platformId))} ${STAGE_TEXT[stage]}`,
+      message: `${platformName(promo.platformId)}: ${promo.code ? `code ${promo.code}` : promo.name}`,
       triggerMs: expiryMs - TRIGGER_OFFSET[stage],
       expiryMs,
     });

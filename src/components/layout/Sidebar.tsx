@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router';
-import { Info, Pill, ShoppingBasket, Timer, Utensils } from 'lucide-react';
+import { CreditCard, Info, Pill, ShoppingBasket, Timer, Utensils } from 'lucide-react';
 import Logo from '../brand/Logo';
 import CountBadge from '../ui/CountBadge';
 import { useNavItems } from './navItems';
@@ -56,6 +56,18 @@ export default function Sidebar() {
               </Link>
             </li>
           ))}
+        </ul>
+      </nav>
+
+      <nav aria-label="Settings" className="border-t border-line pt-4">
+        <p className="px-3 pb-2 text-[12px] font-bold tracking-wide text-muted uppercase">Settings</p>
+        <ul className="space-y-1">
+          <li>
+            <Link to="/settings" aria-current={pathname === '/settings' ? 'page' : undefined} className={row(pathname === '/settings')}>
+              <CreditCard size={22} strokeWidth={1.75} aria-hidden="true" />
+              My cards
+            </Link>
+          </li>
         </ul>
       </nav>
 

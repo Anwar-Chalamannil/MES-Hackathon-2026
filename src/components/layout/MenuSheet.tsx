@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { ChevronRight, Info, Pill, RotateCcw, Search, ShoppingBasket, Timer, Utensils } from 'lucide-react';
+import { ChevronRight, CreditCard, Info, Pill, RotateCcw, Search, ShoppingBasket, Timer, Utensils } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
 import Button from '../ui/Button';
 import Sheet from '../ui/Sheet';
@@ -11,6 +11,7 @@ const LINKS = [
   { to: '/grocery', label: 'Groceries', icon: ShoppingBasket },
   { to: '/pharmacy', label: 'Pharmacy & care', icon: Pill },
   { to: '/vouchers/expiry', label: 'Expiry tracker', icon: Timer },
+  { to: '/settings', label: 'Settings: My cards', icon: CreditCard },
   { to: '/about', label: 'About Perq', icon: Info },
 ] as const;
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
+import { cardPresetById } from '../../data/cardPresets';
 import { platformName } from '../../data/lookup';
 import type { Scenario } from '../../engine/types';
 import { useAppStore } from '../../store/useAppStore';
@@ -10,12 +11,15 @@ const label = <T extends string>(list: { value: T; label: string }[], v: T) => l
 /** One-line summary of the demo profile; tap to change it. */
 export default function ProfileBar({ scenario }: { scenario: Scenario }) {
   const profile = useAppStore((s) => s.profile);
+  const savedCards = useAppStore((s) => s.cards);
   const [open, setOpen] = useState(false);
 
   const parts = [
-    profile.channel === 'card'
-      ? `${label(NETWORKS, profile.network)} card, ${label(ISSUERS, profile.issuer)}`
-      : label(CHANNELS, profile.channel),
+    profile.channel !== 'card'
+      ? label(CHANNELS, profile.channel)
+      : savedCards.length > 0
+        ? `${savedCards.length} saved card${savedCards.length > 1 ? 's' : ''}: ${cardPresetById.get(savedCards[0].presetId)?.label ?? 'card'}${savedCards.length > 1 ? ` +${savedCards.length - 1}` : ''}`
+        : `${label(NETWORKS, profile.network)} card, ${label(ISSUERS, profile.issuer)}`,
     profile.memberships.length ? profile.memberships.map((m) => label(MEMBERSHIPS, m)).join(', ') : 'No memberships',
     profile.firstOrderOn.length ? `New to ${profile.firstOrderOn.map(platformName).join(', ')}` : 'Existing customer',
   ];

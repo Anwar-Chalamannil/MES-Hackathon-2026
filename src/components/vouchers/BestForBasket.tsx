@@ -2,6 +2,7 @@ import { Sparkles } from 'lucide-react';
 import { findPromo, platformName } from '../../data/lookup';
 import { fmt } from '../../engine/money';
 import type { Basket, Comparison, Scenario } from '../../engine/types';
+import { promoHeadline } from '../../lib/promoDisplay';
 import { cheapestOffer } from '../../lib/promoStatus';
 import { useAppStore } from '../../store/useAppStore';
 import { ButtonLink } from '../ui/Button';
@@ -22,7 +23,12 @@ export default function BestForBasket({ comparison, basket }: { comparison: Comp
     } else if (best.applied.length === 0) {
       text = `The lowest total is ${fmt(best.totalDh)} on ${platformName(best.platformId)}. None of your saved vouchers lowers it right now.`;
     } else {
-      const names = best.applied.map((a) => findPromo(a.promoId, custom)?.name ?? a.promoId).join(' + ');
+      const names = best.applied
+        .map((a) => {
+          const p = findPromo(a.promoId, custom);
+          return p ? promoHeadline(p) : a.promoId;
+        })
+        .join(' + ');
       text = `Lowest final amount: ${fmt(best.totalDh)} on ${platformName(best.platformId)}, using ${names}. You save ${fmt(best.promoSavingsDh)} with vouchers.`;
     }
   }

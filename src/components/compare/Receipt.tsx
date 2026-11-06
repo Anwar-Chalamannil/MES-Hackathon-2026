@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { findPromo, productById } from '../../data/lookup';
 import { fmt } from '../../engine/money';
 import type { PricedOffer } from '../../engine/types';
+import { promoHeadline } from '../../lib/promoDisplay';
 import { useAppStore } from '../../store/useAppStore';
 
 function Row({ label, amount, tone = 'normal', strong = false }: { label: ReactNode; amount: string; tone?: 'normal' | 'save'; strong?: boolean }) {
@@ -34,9 +35,10 @@ export default function Receipt({ offer }: { offer: PricedOffer }) {
       {offer.deliveryDh > 0 && <Row label="Delivery" amount={fmt(offer.deliveryDh)} />}
       {offer.serviceDh > 0 && <Row label="Service fee" amount={fmt(offer.serviceDh)} />}
       {offer.smallOrderDh > 0 && <Row label="Small-order fee" amount={fmt(offer.smallOrderDh)} />}
-      {offer.applied.map((a) => (
-        <Row key={a.promoId} tone="save" label={findPromo(a.promoId, custom)?.name ?? a.promoId} amount={`-${fmt(a.savingDh)}`} />
-      ))}
+      {offer.applied.map((a) => {
+        const p = findPromo(a.promoId, custom);
+        return <Row key={a.promoId} tone="save" label={p ? promoHeadline(p) : a.promoId} amount={`-${fmt(a.savingDh)}`} />;
+      })}
       <li className="pt-1">
         <ul><Row strong label="Total" amount={fmt(offer.totalDh)} /></ul>
       </li>

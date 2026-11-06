@@ -15,6 +15,8 @@ export function pageName(pathname: string): string {
     case 'notifications': return 'Alerts';
     case 'vouchers': return second === 'new' ? 'Add a voucher' : second === 'expiry' ? 'Expiry tracker' : second ? 'Voucher' : 'Vouchers';
     case 'compare': return second ? `Compare ${SCENARIO_TITLE[second] ?? ''}`.trim() : 'Compare';
+    case 'guide': return 'Shopping guide';
+    case 'settings': return 'My cards';
     case 'about': return 'About';
     default: return 'Page not found';
   }

@@ -77,9 +77,10 @@ describe('which vouchers count', () => {
   });
   it('titles name the voucher and what is happening', () => {
     const n = buildNotifications(fresh, ANCHOR, ANCHOR).find((x) => x.id === 'K3@expired')!;
-    expect(n.title).toContain('DEMO-KT25');
+    expect(n.title).toContain('25% OFF at Keeta'); // benefit first
     expect(n.title).toContain('expired');
     expect(n.message).toContain('Keeta');
+    expect(n.message).toContain('DEMO-KT25'); // the code moved to the message line
   });
 });
 

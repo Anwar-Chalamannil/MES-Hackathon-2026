@@ -1,6 +1,7 @@
 import { Info, X } from 'lucide-react';
 import { findPromo } from '../../data/lookup';
 import type { PricedOffer } from '../../engine/types';
+import { promoHeadline } from '../../lib/promoDisplay';
 import { useAppStore } from '../../store/useAppStore';
 
 /**
@@ -22,7 +23,8 @@ export default function VoucherCheck({ offer }: { offer: PricedOffer }) {
         <li key={e.promoId} className={`flex gap-2 text-[13px] leading-snug ${e.eligible ? 'text-muted' : 'text-fail'}`}>
           {e.eligible ? <Info size={15} className="mt-0.5 shrink-0" aria-hidden="true" /> : <X size={15} className="mt-0.5 shrink-0" aria-hidden="true" />}
           <span>
-            <strong>{promo?.code ?? promo?.name}</strong>: {e.reason}
+            <strong>{promo ? promoHeadline(promo) : e.promoId}</strong>
+            {promo?.code ? <> ({promo.code})</> : null}: {e.reason}
           </span>
         </li>
       ))}

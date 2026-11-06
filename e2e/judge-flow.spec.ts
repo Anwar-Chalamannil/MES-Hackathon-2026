@@ -55,7 +55,7 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
   await btn(page, 'Close').click();
   await expect(winner(page)).toContainText('Keeta');
   await expect(winner(page)).toContainText('QAR 44.00');
-  await expect(page.getByText('DEMO-TB20: Add QAR 11.00 more').first()).toBeVisible();
+  await expect(page.getByText('20% OFF (DEMO-TB20): Add QAR 11.00 more').first()).toBeVisible();
 
   // Persistence: a reload keeps the basket and the voucher
   await page.reload();
@@ -126,7 +126,7 @@ test('wallet: add, edit and delete a voucher, and track expiry (all saved across
 
   const mine = page.getByTestId('voucher').filter({ hasText: 'Your voucher' });
   await expect(mine).toContainText('E2E voucher');
-  await expect(mine).toContainText('QAR 5.00 off');
+  await expect(mine).toContainText('QAR 5 OFF');
 
   // Persistence
   await page.reload();

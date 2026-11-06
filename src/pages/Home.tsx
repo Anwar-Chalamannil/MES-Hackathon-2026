@@ -1,11 +1,12 @@
 import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { Scale, Search } from 'lucide-react';
 import CategoryTiles from '../components/home/CategoryTiles';
 import FeaturedSavings from '../components/home/FeaturedSavings';
 import HeroBanner from '../components/home/HeroBanner';
 import LiveComparison from '../components/home/LiveComparison';
 import VoucherHighlights from '../components/home/VoucherHighlights';
+import ChooseCards from '../components/cards/ChooseCards';
 import { ButtonLink } from '../components/ui/Button';
 import { compareTarget } from '../lib/compareTarget';
 import { useAppStore } from '../store/useAppStore';
@@ -19,6 +20,8 @@ export default function Home() {
   const [query, setQuery] = useState('');
   const baskets = useAppStore((s) => s.baskets);
   const active = useAppStore((s) => s.activeScenario);
+  const cardSetup = useAppStore((s) => s.cardSetup);
+  const [savedNote, setSavedNote] = useState(false);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -41,6 +44,15 @@ export default function Home() {
           />
         </label>
       </form>
+
+      {cardSetup === 'pending' && (
+        <div className="lg:col-start-1"><ChooseCards mode="onboarding" onSaved={() => setSavedNote(true)} /></div>
+      )}
+      {savedNote && cardSetup !== 'pending' && (
+        <p role="status" className="rounded-btn bg-brand-soft px-3 py-2 text-[14px] font-semibold text-brand lg:col-start-1">
+          Saved. You can change your cards any time in <Link to="/settings" className="underline underline-offset-4">Settings</Link>.
+        </p>
+      )}
 
       <div className="lg:col-start-1"><HeroBanner /></div>
       <div className="lg:col-start-1"><CategoryTiles /></div>

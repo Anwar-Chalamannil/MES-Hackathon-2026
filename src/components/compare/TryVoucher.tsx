@@ -8,6 +8,7 @@ import { useNow } from '../../hooks/useNow';
 import { useAppStore } from '../../store/useAppStore';
 import Button from '../ui/Button';
 import PlatformChip from '../ui/PlatformChip';
+import VoucherBenefit from '../vouchers/VoucherBenefit';
 
 /**
  * Seed vouchers that are not in the wallet by default and fit this scenario. Adding one saves it to the
@@ -45,9 +46,8 @@ export default function TryVoucher({ scenario }: { scenario: Scenario }) {
               <div className="min-w-0 flex-1 space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <PlatformChip platformId={p.platformId} />
-                  {p.code && <code className="rounded bg-brand-soft px-1.5 py-0.5 text-[12px] font-bold text-brand">{p.code}</code>}
                 </div>
-                <p className="text-[14px] leading-snug">{p.summary}</p>
+                <VoucherBenefit promo={p} size="md" />
               </div>
               {added ? (
                 <Button variant="secondary" aria-label={`Added ${name}. Press to remove`} onClick={() => unsaveSeed(p.id)}>

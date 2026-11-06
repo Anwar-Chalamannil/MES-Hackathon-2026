@@ -4,7 +4,7 @@ import { catalog } from '../data/catalog';
 import { resolveExpiry } from '../engine/time';
 import type { Promotion } from '../engine/types';
 import { EXPIRY_FILTERS, filterAndSort, type Dated, type ExpiryFilter } from '../lib/expiry';
-import { describeBenefit } from '../lib/promoText';
+import VoucherBenefit from '../components/vouchers/VoucherBenefit';
 import ExpiryBadge from '../components/vouchers/ExpiryBadge';
 import WalletTabs from '../components/vouchers/WalletTabs';
 import { ButtonLink } from '../components/ui/Button';
@@ -69,12 +69,16 @@ export default function Expiry() {
             <li key={p.id} data-testid="expiry-row" data-promo={p.id} className={`min-w-0 rounded-card border bg-surface p-4 ${expiryMs <= nowMs ? 'border-fail/40' : 'border-line'}`}>
               <div className="flex flex-wrap items-center gap-2">
                 <PlatformChip platformId={p.platformId} />
-                {p.code && <code className="rounded bg-brand-soft px-1.5 py-0.5 text-[12px] font-bold text-brand">{p.code}</code>}
               </div>
-              <p className="mt-2 text-[17px] leading-tight font-extrabold">
-                <Link to={`/vouchers/${p.id}`} className="underline-offset-4 hover:underline">{describeBenefit(p)}</Link>
-              </p>
-              <p className="text-[14px] text-muted">{p.name}</p>
+              <div className="mt-2">
+                <VoucherBenefit
+                  promo={p}
+                  size="md"
+                  expired={expiryMs <= nowMs}
+                  subtitle={p.origin === 'user' ? p.name : undefined}
+                  title={(h) => <Link to={`/vouchers/${p.id}`} className="underline-offset-4 hover:underline">{h}</Link>}
+                />
+              </div>
               <div className="mt-3"><ExpiryBadge expiryMs={expiryMs} nowMs={nowMs} /></div>
             </li>
           ))}

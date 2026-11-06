@@ -14,6 +14,7 @@ import Button, { ButtonLink } from '../components/ui/Button';
 import EmptyState from '../components/ui/EmptyState';
 import type { Scenario } from '../engine/types';
 import { useComparison } from '../hooks/useComparison';
+import { toUiSortMode } from '../lib/sortModes';
 import { useAppStore } from '../store/useAppStore';
 import NotFound from './NotFound';
 
@@ -32,7 +33,7 @@ export default function Compare() {
 function CompareScenario({ scenario }: { scenario: Scenario }) {
   const comparison = useComparison(scenario);
   const basket = useAppStore((s) => s.baskets[scenario]);
-  const mode = useAppStore((s) => s.sortMode);
+  const mode = toUiSortMode(useAppStore((s) => s.sortMode));
   const setActiveScenario = useAppStore((s) => s.setActiveScenario);
   const [editing, setEditing] = useState(false);
   useEffect(() => setActiveScenario(scenario), [scenario, setActiveScenario]);
@@ -81,12 +82,12 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
         <p className="rounded-card bg-brand-soft px-4 py-3 text-[14px] font-semibold text-brand">{comparison.explanation}</p>
       )}
 
-      {winner && <WinnerCard offer={winner} cheapestDh={cheapestDh} mode={mode} explanation={comparison.explanation} />}
+      {winner && <WinnerCard offer={winner} cheapestDh={cheapestDh} mode={mode} explanation={comparison.explanation} card={comparison.cardFor[winner.listingId]} guideHref={`/guide/${scenario}/${winner.listingId}`} />}
 
       {(comparison.singlePlatform ? comparison.ranked : rest).length > 0 && (
         <ul className="grid gap-3 md:grid-cols-2">
           {(comparison.singlePlatform ? comparison.ranked : rest).map((o) => (
-            <li key={o.listingId} className="min-w-0"><OfferCard offer={o} cheapestDh={cheapestDh} mode={mode} /></li>
+            <li key={o.listingId} className="min-w-0"><OfferCard offer={o} cheapestDh={cheapestDh} mode={mode} card={comparison.cardFor[o.listingId]} guideHref={`/guide/${scenario}/${o.listingId}`} /></li>
           ))}
         </ul>
       )}

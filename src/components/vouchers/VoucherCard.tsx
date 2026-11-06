@@ -3,11 +3,13 @@ import { Link } from 'react-router';
 import { AlertTriangle, Check, ChevronDown, Info, X } from 'lucide-react';
 import { resolveExpiry } from '../../engine/time';
 import type { Promotion } from '../../engine/types';
-import { CLASS_HELP, CLASS_LABEL, describeBenefit } from '../../lib/promoText';
+import { CLASS_HELP, CLASS_LABEL } from '../../lib/promoText';
 import type { PromoState, PromoStatus } from '../../lib/promoStatus';
 import PlatformChip from '../ui/PlatformChip';
 import EligibilityList from './EligibilityList';
+import CardOfferNote from './CardOfferNote';
 import ExpiryBadge from './ExpiryBadge';
+import VoucherBenefit from './VoucherBenefit';
 
 const STATE_STYLE: Record<PromoState, { Icon: typeof Check; cls: string }> = {
   applied: { Icon: Check, cls: 'text-save' },
@@ -49,9 +51,6 @@ export default function VoucherCard({
     >
       <div className="flex flex-wrap items-center gap-2">
         <PlatformChip platformId={promo.platformId} />
-        {promo.code && (
-          <code className="rounded bg-brand-soft px-1.5 py-0.5 text-[12px] font-bold text-brand">{promo.code}</code>
-        )}
         {promo.origin === 'user' ? (
           <span className={`${tag} bg-brand text-white`}>Your voucher</span>
         ) : (
@@ -62,15 +61,16 @@ export default function VoucherCard({
         {status.best && <span className={`${tag} bg-save/10 text-save`}>Best for your basket</span>}
       </div>
 
-      <p className="mt-3 text-[22px] leading-tight font-extrabold">
-        {detailLink ? (
-          <Link to={`/vouchers/${promo.id}`} className="underline-offset-4 hover:underline">{describeBenefit(promo)}</Link>
-        ) : (
-          describeBenefit(promo)
-        )}
-      </p>
-      <p className="mt-0.5 text-[15px] font-semibold">{promo.name}</p>
-      <p className="mt-0.5 text-[13px] text-muted">{promo.summary}</p>
+      <div className="mt-3">
+        <VoucherBenefit
+          promo={promo}
+          size="lg"
+          expired={expired}
+          subtitle={promo.origin === 'user' ? promo.name : undefined}
+          title={detailLink ? (h) => <Link to={`/vouchers/${promo.id}`} className="underline-offset-4 hover:underline">{h}</Link> : undefined}
+        />
+        <CardOfferNote promo={promo} expired={expired} />
+      </div>
 
       <div className="relative my-3 border-t border-dashed border-line">
         <span aria-hidden="true" className="absolute -top-2.5 -left-[26px] size-5 rounded-full bg-bg" />

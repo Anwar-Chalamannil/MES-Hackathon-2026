@@ -15,10 +15,10 @@ function v1Data() {
   }));
 }
 
-describe('store version 2 and the v1 migration', () => {
-  it('is version 2', () => {
-    expect(STORE_VERSION).toBe(2);
-    expect(useAppStore.persist.getOptions().version).toBe(2);
+describe('store version 3 and the v1 migration', () => {
+  it('is version 3', () => {
+    expect(STORE_VERSION).toBe(3);
+    expect(useAppStore.persist.getOptions().version).toBe(3);
   });
 
   it('keeps baskets, wallet, profile, sort mode and anchor when migrating v1, and adds an empty read list', () => {

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router';
 import { resolveExpiry } from '../../engine/time';
-import { describeBenefit } from '../../lib/promoText';
 import { savedPromotions } from '../../lib/notifications';
 import { useNow } from '../../hooks/useNow';
 import { useAppStore } from '../../store/useAppStore';
 import ExpiryBadge from '../vouchers/ExpiryBadge';
+import VoucherBenefit from '../vouchers/VoucherBenefit';
 import { ButtonLink } from '../ui/Button';
 import PlatformChip from '../ui/PlatformChip';
 
@@ -44,10 +44,11 @@ export default function VoucherHighlights() {
               <Link to={`/vouchers/${p.id}`} className="block h-full rounded-card border border-line bg-surface p-4 shadow-card active:bg-blue-50">
                 <div className="flex flex-wrap items-center gap-2">
                   <PlatformChip platformId={p.platformId} />
-                  {p.code && <code className="rounded bg-blue-50 px-1.5 py-0.5 text-[12px] font-bold text-brand">{p.code}</code>}
                 </div>
-                <p className="mt-2 text-[17px] leading-tight font-extrabold">{describeBenefit(p)}</p>
-                <p className="text-[13px] text-muted">{p.name}</p>
+                <div className="mt-2">
+                  {/* The whole card is a link, so no Copy button here (it is on the voucher page). */}
+                  <VoucherBenefit promo={p} size="sm" showCopy={false} showRequirement={false} subtitle={p.origin === 'user' ? p.name : undefined} />
+                </div>
                 <div className="mt-2"><ExpiryBadge expiryMs={expiryMs} nowMs={nowMs} /></div>
               </Link>
             </li>

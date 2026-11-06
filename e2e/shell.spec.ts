@@ -111,7 +111,7 @@ test.describe('phone (390px)', () => {
     await page.getByRole('button', { name: 'Save DEMO-TB20' }).click();
     await expect(page.getByRole('button', { name: 'Remove DEMO-TB20 from vouchers' })).toBeVisible();
     await page.goto('/vouchers');
-    await page.getByRole('link', { name: /20% off/ }).first().click();
+    await page.getByRole('link', { name: /20% OFF/ }).first().click();
     await expect(page).toHaveURL(/\/vouchers\//);
   });
 

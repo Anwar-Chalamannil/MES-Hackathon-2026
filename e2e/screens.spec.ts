@@ -8,10 +8,17 @@ const loadDemo = async (page: import('@playwright/test').Page) => {
   await expect(page.getByTestId('winner')).toContainText('QAR 58.00');
 };
 
-test('phone: sort labels fit on one line at 390px, and the winner has the pink pill', async ({ page }) => {
+test('phone: two equal sort buttons that fit at 390px, and the winner has the pink pill', async ({ page }) => {
   await loadDemo(page);
-  const biggest = page.getByRole('radio', { name: 'Biggest discount' });
-  expect((await biggest.boundingBox())!.height).toBeLessThanOrEqual(48);
+  const sort = page.getByRole('radiogroup', { name: 'Sort by' }).getByRole('radio');
+  await expect(sort).toHaveCount(2);
+  await expect(page.getByRole('radio', { name: 'Biggest discount' })).toHaveCount(0);
+  const a = (await sort.nth(0).boundingBox())!;
+  const b = (await sort.nth(1).boundingBox())!;
+  expect(Math.abs(a.width - b.width)).toBeLessThanOrEqual(1);
+  expect(a.height).toBeLessThanOrEqual(48);
+  // Discount amounts are still on the cards.
+  await expect(page.getByTestId('winner')).toContainText('QAR');
   await expect(page.getByTestId('winner')).toContainText('Pays least');
   const price = page.getByTestId('offer').first().locator('.money').first();
   expect((await price.boundingBox())!.height).toBeLessThan(40); // one line, never wrapped

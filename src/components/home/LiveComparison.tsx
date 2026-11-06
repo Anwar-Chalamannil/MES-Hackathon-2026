@@ -7,6 +7,7 @@ import { compareBasket } from '../../engine/compare';
 import { fmt } from '../../engine/money';
 import type { Basket } from '../../engine/types';
 import { useNow } from '../../hooks/useNow';
+import { promoHeadline } from '../../lib/promoDisplay';
 import { useAppStore } from '../../store/useAppStore';
 
 // Hero A from the demo spec: the same Jollibee meal on four apps.
@@ -86,12 +87,11 @@ export default function LiveComparison() {
         {comparison.ranked.map((o, i) => {
           const winner = i === 0;
           const platform = platformById.get(o.platformId);
-          // Short, human labels: a code if there is one, "Free delivery" when delivery is waived, otherwise the offer name.
+          // Short, human labels: the benefit headline ("30% OFF", "Free Delivery"), with the actual saving.
           const note = o.applied
             .map((a) => {
               const p = promoById.get(a.promoId);
-              const label = p?.code ?? (a.target === 'delivery' && a.savingDh === o.deliveryDh ? 'Free delivery' : (p?.name ?? a.promoId));
-              return `${label} −${fmt(a.savingDh)}`;
+              return `${p ? promoHeadline(p) : a.promoId} −${fmt(a.savingDh)}`;
             })
             .join(', ');
           return (

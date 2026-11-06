@@ -1,4 +1,5 @@
 import type { PricedOffer, SortMode } from '../../engine/types';
+import type { CardPreset } from '../../data/cardPresets';
 import OfferCard from './OfferCard';
 
 /**
@@ -6,17 +7,19 @@ import OfferCard from './OfferCard';
  * short highlight whenever the winner or its total changes.
  */
 export default function WinnerCard({
-  offer, cheapestDh, mode, explanation,
+  offer, cheapestDh, mode, explanation, card, guideHref,
 }: {
   offer: PricedOffer;
   cheapestDh: number;
   mode: SortMode;
   explanation: string;
+  card?: CardPreset;
+  guideHref?: string;
 }) {
   return (
     <div aria-live="polite">
       <div key={`${offer.listingId}-${offer.totalDh}`} className="winner-flash">
-        <OfferCard offer={offer} cheapestDh={cheapestDh} winner mode={mode} explanation={explanation} />
+        <OfferCard offer={offer} cheapestDh={cheapestDh} winner mode={mode} explanation={explanation} card={card} guideHref={guideHref} />
       </div>
     </div>
   );

@@ -9,3 +9,9 @@ test-results
 
 # generated review sheets
 assets-src/brand/_*
+
+# promo video renders
+brag-output*/
+
+# Helper-agent worktrees (never commit)
+.claude/worktrees/

@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown, Clock } from 'lucide-react';
-import { findPromo, merchantById } from '../../data/lookup';
+import type { CardPreset } from '../../data/cardPresets';
+import { findPromo, merchantById, platformName } from '../../data/lookup';
 import { fmt } from '../../engine/money';
 import type { PricedOffer, SortMode } from '../../engine/types';
+import { promoHeadline } from '../../lib/promoDisplay';
 import { useAppStore } from '../../store/useAppStore';
+import { ButtonLink } from '../ui/Button';
 import Money from '../ui/Money';
 import PlatformChip from '../ui/PlatformChip';
 import Receipt from './Receipt';
@@ -16,13 +19,17 @@ const STAMP: Record<SortMode, string> = { price: 'Pays least', fastest: 'Fastest
  * opens with a tap; on desktop it is always open.
  */
 export default function OfferCard({
-  offer, cheapestDh, winner = false, mode, explanation,
+  offer, cheapestDh, winner = false, mode, explanation, card, guideHref,
 }: {
   offer: PricedOffer;
   cheapestDh: number;
   winner?: boolean;
   mode: SortMode;
   explanation?: string;
+  /** The saved card whose bank offer made this result, if one did. */
+  card?: CardPreset;
+  /** Link to the Shopping Guide for this app (complete offers only). */
+  guideHref?: string;
 }) {
   const [open, setOpen] = useState(false);
   const custom = useAppStore((s) => s.wallet.custom);
@@ -43,7 +50,7 @@ export default function OfferCard({
             <PlatformChip platformId={offer.platformId} />
             {merchant && merchant.scenario !== 'food' && <p className="mt-1 truncate text-[13px] text-muted">{merchant.name}</p>}
           </div>
-          {/* The blue ring and pink pill mark the winner of the chosen sort. In Fastest or Biggest discount mode the cheapest card also gets a "Lowest price" outline. */}
+          {/* The blue ring and pink pill mark the winner of the chosen sort. In Fastest mode the cheapest card also gets a "Lowest price" outline. */}
           <div className="flex shrink-0 flex-col items-end gap-1">
             {winner && (
               <span className="rounded-full bg-pink px-3 py-1 text-[13px] font-extrabold text-pink-ink">
@@ -71,13 +78,18 @@ export default function OfferCard({
 
         {offer.applied.length > 0 && (
           <ul className="flex flex-wrap gap-1.5" aria-label="Discounts applied">
-            {offer.applied.map((a) => (
-              <li key={a.promoId} className="max-w-full truncate rounded-full bg-save/10 px-2.5 py-1 text-[12px] font-bold text-save">
-                {findPromo(a.promoId, custom)?.name ?? a.promoId} −{fmt(a.savingDh)}
-              </li>
-            ))}
+            {offer.applied.map((a) => {
+              const p = findPromo(a.promoId, custom);
+              return (
+                <li key={a.promoId} className="max-w-full truncate rounded-full bg-save/10 px-2.5 py-1 text-[12px] font-bold text-save">
+                  {p ? promoHeadline(p) : a.promoId} · saves {fmt(a.savingDh)}
+                </li>
+              );
+            })}
           </ul>
         )}
+
+        {card && <p className="text-[13px] font-semibold text-brand" data-testid="best-with-card">Best with your {card.label}</p>}
 
         {winner && explanation && <p className="text-[14px] leading-snug">{explanation}</p>}
 
@@ -95,6 +107,12 @@ export default function OfferCard({
         <div className={open ? 'block' : 'hidden lg:block'}>
           <Receipt offer={offer} />
         </div>
+
+        {guideHref && (
+          <ButtonLink to={guideHref} variant={winner ? 'primary' : 'secondary'} className="w-full" data-testid="shop-at">
+            Shop at {platformName(offer.platformId)}
+          </ButtonLink>
+        )}
       </div>
     </article>
   );

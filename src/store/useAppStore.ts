@@ -1,14 +1,22 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware';
+import { MAX_CARDS, type SavedCard } from '../data/cardPresets';
 import { DEFAULT_PROFILE, DEFAULT_SAVED_IDS } from '../data/defaults';
-import type { Basket, PersistedState, Profile, Promotion, Scenario, SortMode } from '../engine/types';
+import type { Basket, PersistedState, Profile, Promotion, Scenario } from '../engine/types';
+import { toUiSortMode, type UiSortMode } from '../lib/sortModes';
 
 export const STORAGE_KEY = 'basketwise';
 export const MAX_QTY = 20;
-export const STORE_VERSION = 2;
+export const STORE_VERSION = 3;
 
-/** Version 2 adds the ids of in-app notifications the person has already read. */
-export type StoredState = PersistedState & { readNotificationIds: string[] };
+export type CardSetup = 'pending' | 'done' | 'skipped';
+
+/**
+ * Version 2 adds the ids of in-app notifications the person has already read.
+ * Version 3 adds the person's chosen card plans (pointers to presets, never card details) and whether the one-time
+ * "Choose your cards" step is pending, done or skipped.
+ */
+export type StoredState = PersistedState & { readNotificationIds: string[]; cards: SavedCard[]; cardSetup: CardSetup };
 
 const emptyBasket = (scenario: Scenario): Basket => ({ scenario, lines: [] });
 
@@ -22,6 +30,8 @@ export function initialState(now: number = Date.now()): StoredState {
     sortMode: 'price',
     demoAnchor: now,
     readNotificationIds: [],
+    cards: [],
+    cardSetup: 'pending',
   };
 }
 
@@ -69,9 +79,35 @@ export function isValidPersisted(p: unknown): p is PersistedState {
   );
 }
 
-/** Turns saved version 1 data into version 2. Anything unreadable starts fresh. */
+/**
+ * Keeps the well-formed saved cards and drops only the broken ones, so one bad entry never costs the rest.
+ * A card whose preset has since been removed is kept: Settings tells the person, and comparisons ignore it.
+ */
+export function sanitizeCards(x: unknown): SavedCard[] {
+  if (!Array.isArray(x)) return [];
+  const seen = new Set<string>();
+  const out: SavedCard[] = [];
+  for (const c of x) {
+    if (!isObj(c) || !isStr(c.id) || !isStr(c.presetId) || seen.has(c.presetId)) continue;
+    seen.add(c.presetId);
+    out.push({ id: c.id, presetId: c.presetId });
+  }
+  return out.slice(0, MAX_CARDS);
+}
+const sanitizeSetup = (x: unknown): CardSetup => (oneOf(x, ['pending', 'done', 'skipped']) ? (x as CardSetup) : 'pending');
+
+/** Turns saved version 1 or 2 data into version 3. Anything unreadable starts fresh. */
 export function migratePersisted(persisted: unknown, version: number): StoredState {
-  if (version === 1 && isValidPersisted(persisted)) return { ...persisted, readNotificationIds: [] };
+  if ((version === 1 || version === 2) && isValidPersisted(persisted)) {
+    const old = persisted as Partial<StoredState>;
+    return {
+      ...persisted,
+      sortMode: toUiSortMode(persisted.sortMode),
+      readNotificationIds: version === 1 ? [] : (old.readNotificationIds ?? []),
+      cards: [],
+      cardSetup: 'pending',
+    };
+  }
   return initialState();
 }
 
@@ -84,7 +120,7 @@ interface Actions {
   /** Empties the basket and sets its restaurant. */
   startBasket: (scenario: Scenario, merchantId?: string) => void;
   setProfile: (patch: Partial<Profile>) => void;
-  setSortMode: (mode: SortMode) => void;
+  setSortMode: (mode: UiSortMode) => void;
   setActiveScenario: (scenario: Scenario) => void;
   /** Adds a seed voucher to the wallet / removes it. */
   saveSeed: (id: string) => void;
@@ -94,6 +130,12 @@ interface Actions {
   updateCustom: (promo: Promotion) => void;
   deleteCustom: (id: string) => void;
   resetDemo: () => void;
+  /** Cards: a person picks plans from a preset list. Only a preset id is stored. */
+  addCard: (presetId: string) => void;
+  updateCard: (id: string, presetId: string) => void;
+  removeCard: (id: string) => void;
+  setCards: (presetIds: string[]) => void;
+  setCardSetup: (setup: CardSetup) => void;
   /** Notifications: ids look like `${promoId}@${stage}`. */
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: (ids: string[]) => void;
@@ -120,6 +162,8 @@ function getStorage(): StateStorage {
     return memoryStorage;
   }
 }
+
+const newCardId = () => `card-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -160,7 +204,7 @@ export const useAppStore = create<AppState>()(
         })),
 
       setProfile: (patch) => set((s) => ({ profile: { ...s.profile, ...patch } })),
-      setSortMode: (sortMode) => set({ sortMode }),
+      setSortMode: (sortMode) => set({ sortMode: toUiSortMode(sortMode) }),
       setActiveScenario: (activeScenario) => set({ activeScenario }),
 
       saveSeed: (id) =>
@@ -183,6 +227,25 @@ export const useAppStore = create<AppState>()(
 
       resetDemo: () => set(initialState()),
 
+      addCard: (presetId) =>
+        set((s) =>
+          s.cards.length >= MAX_CARDS || s.cards.some((c) => c.presetId === presetId)
+            ? s
+            : { cards: [...s.cards, { id: newCardId(), presetId }] },
+        ),
+      updateCard: (id, presetId) =>
+        set((s) =>
+          s.cards.some((c) => c.id !== id && c.presetId === presetId)
+            ? s
+            : { cards: s.cards.map((c) => (c.id === id ? { ...c, presetId } : c)) },
+        ),
+      removeCard: (id) => set((s) => ({ cards: s.cards.filter((c) => c.id !== id) })),
+      setCards: (presetIds) =>
+        set((s) => ({
+          cards: [...new Set(presetIds)].slice(0, MAX_CARDS).map((presetId) => s.cards.find((c) => c.presetId === presetId) ?? { id: newCardId(), presetId }),
+        })),
+      setCardSetup: (cardSetup) => set({ cardSetup }),
+
       markNotificationRead: (id) =>
         set((s) => (s.readNotificationIds.includes(id) ? s : { readNotificationIds: [...s.readNotificationIds, id] })),
       markAllNotificationsRead: (ids) =>
@@ -200,11 +263,19 @@ export const useAppStore = create<AppState>()(
       name: STORAGE_KEY,
       version: STORE_VERSION,
       storage: createJSONStorage(getStorage),
-      // Version 1 data is carried over; any other shape starts fresh instead of crashing.
+      // Version 1 and 2 data are carried over; any other shape starts fresh instead of crashing.
       migrate: (persisted, version) => migratePersisted(persisted, version),
       merge: (persisted, current) =>
         isValidPersisted(persisted)
-          ? { ...current, ...persisted, readNotificationIds: (persisted as Partial<StoredState>).readNotificationIds ?? [] }
+          ? {
+              ...current,
+              ...persisted,
+              // Old saved "Biggest discount" preference falls back to Best price; nothing else is reset.
+              sortMode: toUiSortMode(persisted.sortMode),
+              readNotificationIds: (persisted as Partial<StoredState>).readNotificationIds ?? [],
+              cards: sanitizeCards((persisted as Partial<StoredState>).cards),
+              cardSetup: sanitizeSetup((persisted as Partial<StoredState>).cardSetup),
+            }
           : current,
       partialize: (s): StoredState => ({
         baskets: s.baskets,
@@ -214,6 +285,8 @@ export const useAppStore = create<AppState>()(
         sortMode: s.sortMode,
         demoAnchor: s.demoAnchor,
         readNotificationIds: s.readNotificationIds,
+        cards: s.cards,
+        cardSetup: s.cardSetup,
       }),
     },
   ),

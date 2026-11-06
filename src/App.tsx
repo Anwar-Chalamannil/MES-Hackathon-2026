@@ -11,6 +11,8 @@ import NotFound from './pages/NotFound';
 import Notifications from './pages/Notifications';
 import ScenarioShop from './pages/ScenarioShop';
 import Search from './pages/Search';
+import Settings from './pages/Settings';
+import ShoppingGuide from './pages/ShoppingGuide';
 import { EditVoucher, NewVoucher } from './pages/VoucherEdit';
 import VoucherDetail from './pages/VoucherDetail';
 import Wallet from './pages/Wallet';
@@ -38,11 +40,13 @@ export default function App() {
         <Route path="vouchers/expiry" element={<Expiry />} />
         <Route path="vouchers/:id" element={<VoucherDetail />} />
         <Route path="vouchers/:id/edit" element={<EditVoucher />} />
+        <Route path="guide/:scenario/:listingId" element={<ShoppingGuide />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="wallet" element={<Navigate to="/vouchers" replace />} />
         <Route path="wallet/new" element={<Navigate to="/vouchers/new" replace />} />
         <Route path="wallet/:id" element={<LegacyEdit />} />
         <Route path="expiry" element={<Navigate to="/vouchers/expiry" replace />} />
+        <Route path="settings" element={<Settings />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Route>
