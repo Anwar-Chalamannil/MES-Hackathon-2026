@@ -7,7 +7,7 @@
 Innovation · Problem understanding · Potential impact · Technical execution · Presentation
 
 ## Links
-- Live site: https://mes-hackathon-2026.vercel.app/
+- Live site: https://perq-qatar.vercel.app/ (the older address https://mes-hackathon-2026.vercel.app/ still works)
 - Repo: https://github.com/Anwar-Chalamannil/MES-Hackathon-2026
 - Event: meshackathon.com · info@meshackathon.com
 
