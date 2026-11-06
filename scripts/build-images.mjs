@@ -164,6 +164,31 @@ const KINDS = [
 const SIZES = [160, 480];
 const IMAGE_EXT = /\.(png|jpe?g|webp|svg)$/i;
 
+// Some supplied logos have a fake transparency checkerboard baked into their pixels. For these ids, the light grey and
+// white squares connected to the picture's edge are made really transparent (the logo itself is untouched).
+const CLEAN_CHECKERBOARD = new Set(['merchants/mcdonalds']);
+async function removeEdgeCheckerboard(input) {
+  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width: W, height: H } = info;
+  const neutral = (i) => { const r = data[i], g = data[i + 1], b = data[i + 2]; return Math.abs(r - g) < 10 && Math.abs(g - b) < 10 && r > 190; };
+  const seen = new Uint8Array(W * H);
+  const stack = [];
+  for (let x = 0; x < W; x++) stack.push(x, (H - 1) * W + x);
+  for (let y = 0; y < H; y++) stack.push(y * W, y * W + W - 1);
+  while (stack.length) {
+    const p = stack.pop();
+    if (seen[p] || !neutral(p * 4)) continue;
+    seen[p] = 1;
+    data[p * 4 + 3] = 0;
+    const x = p % W;
+    if (x > 0) stack.push(p - 1);
+    if (x < W - 1) stack.push(p + 1);
+    if (p >= W) stack.push(p - W);
+    if (p < W * (H - 1)) stack.push(p + W);
+  }
+  return sharp(data, { raw: { width: W, height: H, channels: 4 } }).png().toBuffer();
+}
+
 async function buildAssets() {
   const found = {};
   for (const { kind, dir, logo } of KINDS) {
@@ -185,11 +210,12 @@ async function buildAssets() {
         console.log(`  ${id.padEnd(32)} svg (copied)`);
         continue;
       }
+      const source = CLEAN_CHECKERBOARD.has(`${kind}/${id}`) ? await removeEdgeCheckerboard(input) : input;
       let meta;
       try { meta = await sharp(input).metadata(); } catch (e) { console.warn(`  ${name}: cannot read, skipped (${e.message})`); continue; }
       for (const size of SIZES) {
         // Logos keep their shape inside a square on a transparent background. Photos are cropped to a square around the centre.
-        const img = sharp(input).rotate().resize(logo
+        const img = sharp(source).rotate().resize(logo
           ? { width: size, height: size, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 }, withoutEnlargement: false }
           : { width: size, height: size, fit: 'cover', position: 'centre' });
         const buf = await img.webp({ quality: logo ? 92 : 80, effort: 5 }).toBuffer();

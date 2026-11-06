@@ -2,8 +2,8 @@
 // Which image files exist in public/img, by kind and id.
 export type ImageExt = 'webp' | 'svg';
 export const IMAGE_FILES: Record<'merchants' | 'platforms' | 'products' | 'dishes', Record<string, ImageExt>> = {
-  merchants: { },
-  platforms: { },
+  merchants: { 'carrefour': 'webp', 'flat-white': 'webp', 'jollibee': 'webp', 'karak-mqanes': 'webp', 'kulud': 'webp', 'lulu': 'webp', 'mcdonalds': 'webp', 'ninja': 'webp', 'pizza-hut': 'webp', 'shake-shack': 'webp', 'talabat-mart': 'webp', 'wellcare': 'webp' },
+  platforms: { 'carrefour': 'webp', 'keeta': 'webp', 'kulud': 'webp', 'lulu': 'webp', 'ninja': 'webp', 'rafeeq': 'webp', 'snoonu': 'webp', 'talabat': 'webp', 'wellcare': 'webp' },
   products: { },
   dishes: { },
 };

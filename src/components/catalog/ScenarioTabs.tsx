@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router';
 const TABS = [
   { to: '/food', label: 'Restaurants' },
   { to: '/grocery', label: 'Groceries' },
-  { to: '/pharmacy', label: 'Pharmacy & care' },
+  { to: '/pharmacy', label: 'Pharmacy' },
 ];
 
 /** Switch between the three shopping scenarios. Each keeps its own basket. */
