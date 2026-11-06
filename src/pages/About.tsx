@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
+import { DISH_ALT, DISH_CREDITS } from '../data/images';
 import { sources } from '../data/sources';
 import { CLASS_HELP, CLASS_LABEL } from '../lib/promoText';
 import { APP_NAME } from '../config';
@@ -63,6 +64,24 @@ export default function About() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="space-y-2" aria-labelledby="credits-title">
+        <h2 id="credits-title" className="text-[17px] font-extrabold">Images and credits</h2>
+        <p className="text-[15px]">
+          Logos and brand names belong to their owners and are shown only to identify the places in this demo. {APP_NAME} is not affiliated with the brands shown.
+          Food photos are illustrative stock images, not the exact item. Product photos were taken by the team.
+        </p>
+        {Object.keys(DISH_CREDITS).length > 0 && (
+          <ul className="space-y-1 text-[14px]">
+            {Object.entries(DISH_CREDITS).map(([key, c]) => (
+              <li key={key}>
+                {DISH_ALT[key] ?? key}: photo by{' '}
+                <a href={c.url} target="_blank" rel="noreferrer" className="font-bold text-brand underline">{c.author}</a> on {c.source}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section className="space-y-2">

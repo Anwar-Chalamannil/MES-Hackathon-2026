@@ -34,7 +34,7 @@ export default function OfferCard({
       data-testid={winner ? 'winner' : 'offer'}
       data-listing={offer.listingId}
       className={`min-w-0 overflow-hidden rounded-card border bg-surface ${
-        winner ? `border-t-4 ${mode === 'price' ? 'border-win' : 'border-brand'}` : 'border-line'
+        winner ? 'border-2 border-blue shadow-card' : 'border-line'
       }`}
     >
       <div className="space-y-3 p-4">
@@ -43,15 +43,15 @@ export default function OfferCard({
             <PlatformChip platformId={offer.platformId} />
             {merchant && merchant.scenario !== 'food' && <p className="mt-1 truncate text-[13px] text-muted">{merchant.name}</p>}
           </div>
-          {/* Maroon means "lowest total". In Fastest or Biggest discount mode the winner is teal and the cheapest card keeps maroon. */}
+          {/* The blue ring and pink pill mark the winner of the chosen sort. In Fastest or Biggest discount mode the cheapest card also gets a "Lowest price" outline. */}
           <div className="flex shrink-0 flex-col items-end gap-1">
             {winner && (
-              <span className={`rounded-full px-3 py-1 text-[13px] font-bold text-white ${mode === 'price' ? 'bg-win' : 'bg-brand'}`}>
+              <span className="rounded-full bg-pink px-3 py-1 text-[13px] font-extrabold text-pink-ink">
                 {STAMP[mode]}
               </span>
             )}
             {gap === 0 && !(winner && mode === 'price') && (
-              <span className="rounded-full border border-win px-3 py-0.5 text-[13px] font-bold text-win">Lowest price</span>
+              <span className="rounded-full border border-blue px-3 py-0.5 text-[13px] font-bold text-brand">Lowest price</span>
             )}
           </div>
         </div>
@@ -59,9 +59,9 @@ export default function OfferCard({
         <div className="flex items-end justify-between gap-3">
           <div>
             <p className="text-[13px] text-muted">You pay</p>
-            <Money dh={offer.totalDh} className={`font-display tracking-tight ${winner ? 'text-[40px] leading-none' : 'text-[28px] leading-none'}`} />
+            <Money dh={offer.totalDh} className={`font-display tracking-tight whitespace-nowrap ${winner ? 'text-[38px] leading-none' : 'text-[26px] leading-none'}`} />
           </div>
-          <div className="text-right text-[13px] text-muted">
+          <div className="min-w-0 text-right text-[13px] text-muted">
             <p className="flex items-center justify-end gap-1">
               <Clock size={14} aria-hidden="true" /> {offer.eta[0]}–{offer.eta[1]} min
             </p>

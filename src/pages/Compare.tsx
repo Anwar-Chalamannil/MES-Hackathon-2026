@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { Pencil } from 'lucide-react';
 import { merchantById } from '../data/lookup';
 import BasketSheet from '../components/basket/BasketSheet';
+import BasketSummary from '../components/compare/BasketSummary';
 import IncompleteList from '../components/compare/IncompleteList';
 import ModeSwitch from '../components/compare/ModeSwitch';
 import OfferCard from '../components/compare/OfferCard';
@@ -55,7 +56,8 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
   }
 
   return (
-    <div className="space-y-4 pb-8">
+    <div className="pb-8 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-8">
+      <div className="min-w-0 space-y-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="text-[24px] font-extrabold tracking-tight">Compare</h1>
@@ -63,16 +65,16 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
             {title}, {count} {count === 1 ? 'item' : 'items'}{merchant ? `, ${merchant.name}` : ''}
           </p>
         </div>
-        <Button variant="secondary" onClick={() => setEditing(true)}>
+        <Button variant="secondary" onClick={() => setEditing(true)} className="lg:hidden">
           <Pencil size={16} aria-hidden="true" /> Edit basket
         </Button>
       </div>
 
-      <div className="sticky top-14 z-20 -mx-4 bg-bg px-4 py-2">
+      <div className="sticky top-16 z-20 -mx-4 bg-bg px-4 py-2">
         <ModeSwitch />
       </div>
 
-      <ProfileBar scenario={scenario} />
+      <div className="lg:hidden"><ProfileBar scenario={scenario} /></div>
 
       {comparison.singlePlatform && <p className="rounded-card bg-brand-soft px-4 py-3 text-[14px] font-semibold text-brand">{comparison.explanation}</p>}
       {!comparison.singlePlatform && comparison.ranked.length === 0 && (
@@ -82,7 +84,7 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
       {winner && <WinnerCard offer={winner} cheapestDh={cheapestDh} mode={mode} explanation={comparison.explanation} />}
 
       {(comparison.singlePlatform ? comparison.ranked : rest).length > 0 && (
-        <ul className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-3 md:grid-cols-2">
           {(comparison.singlePlatform ? comparison.ranked : rest).map((o) => (
             <li key={o.listingId} className="min-w-0"><OfferCard offer={o} cheapestDh={cheapestDh} mode={mode} /></li>
           ))}
@@ -90,10 +92,20 @@ function CompareScenario({ scenario }: { scenario: Scenario }) {
       )}
 
       <IncompleteList offers={comparison.incomplete} />
-      <TryVoucher scenario={scenario} />
+      <div className="lg:hidden"><TryVoucher scenario={scenario} /></div>
       <p className="text-[12px] text-muted">
         All prices, fees, delivery times and vouchers are simulated examples. Conditions marked "check in the app" cannot be verified here.
       </p>
+
+      </div>
+
+      <aside aria-label="Basket and payment profile" className="hidden lg:block">
+        <div className="sticky top-24 space-y-4">
+          <BasketSummary basket={basket} onEdit={() => setEditing(true)} />
+          <ProfileBar scenario={scenario} />
+          <TryVoucher scenario={scenario} />
+        </div>
+      </aside>
 
       <BasketSheet scenario={scenario} open={editing} onClose={() => setEditing(false)} showCompare={false} />
     </div>

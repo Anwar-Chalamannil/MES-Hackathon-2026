@@ -38,7 +38,7 @@ export default function Wallet() {
   return (
     <div className="space-y-4 pb-8">
       <div>
-        <h1 className="text-[24px] font-extrabold tracking-tight">Voucher wallet</h1>
+        <h1 className="text-[24px] font-extrabold tracking-tight">Vouchers</h1>
         <p className="mt-1 text-[15px] text-muted">Save vouchers, see why each one applies or not, and let us pick the best.</p>
       </div>
       <WalletTabs />

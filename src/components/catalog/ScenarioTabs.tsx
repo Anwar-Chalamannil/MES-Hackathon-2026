@@ -1,9 +1,9 @@
 import { Link, useLocation } from 'react-router';
 
 const TABS = [
-  { to: '/food', label: 'Food' },
+  { to: '/food', label: 'Restaurants' },
   { to: '/grocery', label: 'Groceries' },
-  { to: '/pharmacy', label: 'Pharmacy' },
+  { to: '/pharmacy', label: 'Pharmacy & care' },
 ];
 
 /** Switch between the three shopping scenarios. Each keeps its own basket. */
@@ -18,7 +18,7 @@ export default function ScenarioTabs() {
             key={t.to}
             to={t.to}
             aria-current={on ? 'page' : undefined}
-            className={`flex min-h-11 items-center justify-center rounded-[10px] text-[14px] font-bold ${on ? 'bg-brand text-white' : 'text-muted active:bg-brand-soft'}`}
+            className={`flex min-h-11 items-center justify-center rounded-[10px] text-[14px] font-bold ${on ? 'bg-brand text-white' : 'text-muted active:bg-blue-50'}`}
           >
             {t.label}
           </Link>

@@ -174,13 +174,13 @@ test('resilience: damaged saved data, unknown page, and keyboard use', async ({ 
     } catch { /* ignore */ }
   });
   await page.goto('/wallet');
-  await expect(page.getByRole('heading', { name: 'Voucher wallet' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Vouchers', exact: true })).toBeVisible();
   await expect(page.getByRole('radio', { name: /Saved \(12\)/ })).toBeVisible(); // defaults restored
 
   // Saved data that is not even valid JSON
   await page.evaluate(() => localStorage.setItem('basketwise', 'not json {{'));
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Voucher wallet' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Vouchers', exact: true })).toBeVisible();
 
   // Unknown page: friendly message, a working way home, and a matching tab title
   await page.goto('/no-such-page');

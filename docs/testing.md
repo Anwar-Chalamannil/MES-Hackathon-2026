@@ -22,5 +22,7 @@ Owners: Sadiya and Arefa. Log what was tested, what happened, and what to fix.
 
 | 2026-11-06 | Claude (automated + screenshots at 390 and 1280px) | R5 Home: hero with two working CTAs, category tiles with counts, live comparison (right rail on desktop), engine-made featured savings (QAR 5.00, 14.75, 47.80), voucher highlights, search pill | 334 unit tests and 25 e2e tests pass; no overflow 320 to 768px | None open |
 
+| 2026-11-06 | Claude (automated + screenshots at 390 and 1280px) | R6 screens: blue ring and pink pill on the winner, prices never wrap, desktop compare side panel (basket, profile, Try a voucher), Best for your Food basket with category switch, Vouchers title, About images and credits | 334 unit tests and 29 e2e tests pass | None open |
+
 ## User feedback
 -
