@@ -7,6 +7,7 @@ import { merchantById } from '../../data/lookup';
 import { useAppStore } from '../../store/useAppStore';
 import ReplaceBasketDialog from '../basket/ReplaceBasketDialog';
 import Button, { ButtonLink } from '../ui/Button';
+import { heroImage } from '../../data/images';
 import SkylineArt from './SkylineArt';
 
 /** The first thing a judge sees: what Perq does, and two ways to try it. */
@@ -20,6 +21,7 @@ export default function HeroBanner() {
     if (wouldReplaceFood(heroBasket())) setConfirm(true);
     else navigate(`/compare/${loadDemoBasket()}`);
   };
+  const photo = heroImage();
   const current = baskets.food.merchantId ? merchantById.get(baskets.food.merchantId)?.name : undefined;
 
   return (
@@ -42,7 +44,27 @@ export default function HeroBanner() {
           </Button>
         </div>
       </div>
-      <SkylineArt className="-mx-5 mt-4 block h-auto w-[calc(100%+2.5rem)] lg:mx-0 lg:mt-0 lg:h-[130px] lg:w-full" />
+      <div className="relative -mx-5 mt-4 lg:-mx-10 lg:mt-3">
+        {photo ? (
+          <>
+            <img
+              src={photo.src}
+              srcSet={photo.srcSet}
+              sizes="(min-width: 1024px) 575px, 100vw"
+              alt=""
+              width={photo.width}
+              height={photo.height}
+              fetchPriority="high"
+              decoding="async"
+              className="pointer-events-none block h-[190px] w-full object-cover object-[50%_75%] select-none lg:h-[260px]"
+            />
+            {/* soft fade from the banner colour into the photo, so the text area and the photo read as one panel */}
+            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-pink-50 to-transparent" />
+          </>
+        ) : (
+          <SkylineArt className="block h-auto w-full lg:h-[130px]" />
+        )}
+      </div>
 
       <ReplaceBasketDialog
         open={confirm}

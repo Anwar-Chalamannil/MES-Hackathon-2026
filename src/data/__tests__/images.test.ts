@@ -32,13 +32,14 @@ describe('supplied image files', () => {
     for (const id of Object.keys(IMAGE_FILES.platforms)) expect(platforms.has(id), `platforms/${id}`).toBe(true);
     for (const id of Object.keys(IMAGE_FILES.products)) expect(products.has(id), `products/${id}`).toBe(true);
     for (const id of Object.keys(IMAGE_FILES.dishes)) expect(dishes.has(id), `dishes/${id}`).toBe(true);
+    expect(Object.keys(IMAGE_FILES.hero).filter((id) => id !== 'doha-skyline'), 'hero images must be named doha-skyline').toEqual([]);
   });
 
   it('every listed file exists in public/img (and in both sizes for photos)', () => {
     for (const [kind, items] of Object.entries(IMAGE_FILES)) {
       for (const [id, ext] of Object.entries(items)) {
         if (ext === 'svg') expect(exists('public', 'img', kind, `${id}.svg`), `${kind}/${id}.svg`).toBe(true);
-        else for (const size of [160, 480]) expect(exists('public', 'img', kind, `${id}-${size}.webp`), `${kind}/${id}-${size}.webp`).toBe(true);
+        else for (const size of kind === 'hero' ? [800, 1600] : [160, 480]) expect(exists('public', 'img', kind, `${id}-${size}.webp`), `${kind}/${id}-${size}.webp`).toBe(true);
       }
     }
   });

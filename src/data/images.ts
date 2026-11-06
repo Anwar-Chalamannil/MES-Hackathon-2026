@@ -36,6 +36,14 @@ function sourceFor(kind: ImageKind, id: string, alt: string, illustrative: boole
   return { src: small, srcSet: small === big ? undefined : `${small} 160w, ${big} 480w`, alt, illustrative };
 }
 
+/** The wide Doha skyline photo on the Home banner (assets-src/hero/doha-skyline). Decorative, so its alt text is empty. */
+export function heroImage(): (ImageSource & { width: number; height: number }) | undefined {
+  if (!IMAGE_FILES.hero['doha-skyline']) return undefined;
+  const small = '/img/hero/doha-skyline-800.webp';
+  const big = '/img/hero/doha-skyline-1600.webp';
+  return { src: small, srcSet: `${small} 800w, ${big} 1600w`, alt: '', illustrative: false, width: 1600, height: 854 };
+}
+
 export const merchantLogo = (m: Pick<Merchant, 'id' | 'name'>) => sourceFor('merchants', m.id, `${m.name} logo`, false);
 
 export const platformLogo = (platformId: string, name: string) => sourceFor('platforms', platformId, `${name} logo`, false);
