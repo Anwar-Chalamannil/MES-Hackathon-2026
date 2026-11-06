@@ -216,7 +216,12 @@ async function buildAssets() {
       try { meta = await sharp(input).metadata(); } catch (e) { console.warn(`  ${name}: cannot read, skipped (${e.message})`); continue; }
       for (const size of wide ? [800, 1600] : SIZES) {
         // Logos keep their shape inside a square on a transparent background. Photos are cropped to a square around the centre.
-        const img = sharp(source).rotate().resize(wide ? { width: size, withoutEnlargement: true } : logo
+        // Photos that are not roughly square (tall bottles, wide boxes) are fitted whole on their own background colour
+        // instead of being cropped, so no product is cut off.
+        const ratio = (meta.width ?? 1) / (meta.height ?? 1);
+        const fitWhole = !logo && !wide && (ratio > 1.15 || ratio < 0.87);
+        const corner = fitWhole ? (await sharp(source).rotate().extract({ left: 0, top: 0, width: 4, height: 4 }).stats()).channels.map((c) => Math.round(c.mean)) : null;
+        const img = sharp(source).rotate().resize(fitWhole ? { width: size, height: size, fit: 'contain', background: { r: corner[0], g: corner[1], b: corner[2], alpha: 1 } } : wide ? { width: size, withoutEnlargement: true } : logo
           ? { width: size, height: size, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 }, withoutEnlargement: false }
           : { width: size, height: size, fit: 'cover', position: 'centre' });
         const buf = await img.webp({ quality: logo ? 92 : wide ? 72 : 80, effort: 5 }).toBuffer();

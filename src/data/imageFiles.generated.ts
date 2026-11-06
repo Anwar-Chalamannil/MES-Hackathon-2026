@@ -4,7 +4,7 @@ export type ImageExt = 'webp' | 'svg';
 export const IMAGE_FILES: Record<'merchants' | 'platforms' | 'products' | 'dishes' | 'hero', Record<string, ImageExt>> = {
   merchants: { 'carrefour': 'webp', 'flat-white': 'webp', 'jollibee': 'webp', 'karak-mqanes': 'webp', 'kulud': 'webp', 'lulu': 'webp', 'mcdonalds': 'webp', 'ninja': 'webp', 'pizza-hut': 'webp', 'shake-shack': 'webp', 'talabat-mart': 'webp', 'wellcare': 'webp' },
   platforms: { 'carrefour': 'webp', 'keeta': 'webp', 'kulud': 'webp', 'lulu': 'webp', 'ninja': 'webp', 'rafeeq': 'webp', 'snoonu': 'webp', 'talabat': 'webp', 'wellcare': 'webp' },
-  products: { 'gr-almarai-milk-2l': 'webp', 'gr-americana-mixed-veg-900g': 'webp', 'gr-fairy-lemon-1l': 'webp', 'gr-galaxy-milk-90g': 'webp', 'gr-indiagate-basmati-5kg': 'webp', 'gr-lays-salted-170g': 'webp', 'gr-lipton-yl-100': 'webp', 'gr-puck-cream-cheese-500g': 'webp', 'gr-tide-3kg': 'webp' },
+  products: { 'gr-almarai-milk-2l': 'webp', 'gr-americana-mixed-veg-900g': 'webp', 'gr-fairy-lemon-1l': 'webp', 'gr-galaxy-milk-90g': 'webp', 'gr-indiagate-basmati-5kg': 'webp', 'gr-lays-salted-170g': 'webp', 'gr-lipton-yl-100': 'webp', 'gr-puck-cream-cheese-500g': 'webp', 'gr-tide-3kg': 'webp', 'ph-cerave-cleanser-236ml': 'webp', 'ph-cerave-cream-340g': 'webp', 'ph-cetaphil-cleanser-236ml': 'webp', 'ph-johnsons-baby-shampoo-500ml': 'webp', 'ph-lrp-anthelios-50ml': 'webp', 'ph-nivea-lip-4-8g': 'webp', 'ph-ordinary-niacinamide-30ml': 'webp', 'ph-sensodyne-repair-75ml': 'webp', 'ph-vaseline-aloe-400ml': 'webp' },
   dishes: { },
   hero: { 'doha-skyline': 'webp' },
 };
