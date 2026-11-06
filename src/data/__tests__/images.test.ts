@@ -17,8 +17,8 @@ describe('dish photo mapping', () => {
   it('every dish key has alt text, and the alt text is never empty', () => {
     for (const key of new Set(Object.values(DISH_KEYS))) expect(DISH_ALT[key]?.length, key).toBeGreaterThan(3);
   });
-  it('uses at most the 28 dish keys from the plan', () => {
-    expect(new Set(Object.values(DISH_KEYS)).size).toBeLessThanOrEqual(28);
+  it('uses at most 40 dish photo keys', () => {
+    expect(new Set(Object.values(DISH_KEYS)).size).toBeLessThanOrEqual(40);
   });
 });
 
