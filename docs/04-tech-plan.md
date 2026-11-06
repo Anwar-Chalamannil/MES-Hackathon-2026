@@ -1,6 +1,6 @@
 # Tech plan
 
-Approved plan: BasketWise v2 at `C:\Users\fadhi\.claude\plans\pasted-content-id-710b-role-principal-ticklish-acorn.md`. Simplest option that meets the spec.
+Approved plan: Perq v3 (with the BasketWise v2 engine and data plan as an appendix) at `C:\Users\fadhi\.claude\plans\pasted-content-id-710b-role-principal-ticklish-acorn.md`. Simplest option that meets the spec.
 
 ## Stack and why
 | Tool | Why |
@@ -11,7 +11,9 @@ Approved plan: BasketWise v2 at `C:\Users\fadhi\.claude\plans\pasted-content-id-
 | zustand (persist) | Small store with built-in localStorage and versioning. |
 | vitest | Unit tests for the calculation engine and data. |
 | Playwright (one spec) | One end-to-end judge journey. |
-| @fontsource-variable/bricolage-grotesque, @fontsource-variable/public-sans, lucide-react | Self-hosted fonts (no Google request) and tree-shaken icons. Bricolage Grotesque for headlines and big prices, Public Sans for body text and forms (plain zeros and tabular figures, which matter for prices). |
+| @fontsource-variable/plus-jakarta-sans, lucide-react | Self-hosted font (no Google request) and tree-shaken icons. Plus Jakarta Sans matches the Perq references. |
+| sharp (dev only) | Build-time image tool (`npm run images`): removes the logo background, crops the basket icon, and makes WebP and icon sizes. Never shipped to users. |
+| @types/node (dev only) | Types for the tests that read files (brand assets, design-token contrast). |
 
 No backend, database, auth, date library or component library.
 

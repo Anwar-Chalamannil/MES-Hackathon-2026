@@ -6,3 +6,6 @@ dist
 playwright-report
 test-results
 .DS_Store
+
+# generated review sheets
+assets-src/brand/_*

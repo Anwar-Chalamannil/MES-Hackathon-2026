@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import { sources } from '../data/sources';
 import { CLASS_HELP, CLASS_LABEL } from '../lib/promoText';
 import { APP_NAME } from '../config';
+import Logo from '../components/brand/Logo';
 import Button from '../components/ui/Button';
 import { useAppStore } from '../store/useAppStore';
 
@@ -18,16 +19,18 @@ export default function About() {
 
   return (
     <div className="max-w-2xl space-y-6 pb-8">
-      <h1 className="text-[24px] font-extrabold tracking-tight">About this prototype</h1>
+      <Logo variant="lockup" height={170} />
+      <h1 className="text-[24px] font-extrabold tracking-tight">About {APP_NAME}</h1>
 
       <section className="space-y-2">
         <p className="text-[17px]">
           {APP_NAME} was built for the MES Youth Hackathon 2026 (Smarter Qatar). It shows what you would actually pay for the same basket on
           different apps, after delivery fees, service fees and vouchers.
         </p>
-        <p className="rounded-card bg-brand-soft px-4 py-3 text-[15px] font-semibold text-brand">
+        <p className="rounded-card bg-pink-50 px-4 py-3 text-[15px] font-semibold text-ink">
           Every price, fee, delivery time, availability and voucher here is simulated. Nothing is a live offer from Talabat, Snoonu,
-          Rafeeq, Keeta, Ninja, Carrefour, Lulu, Kulud or Wellcare. We use their names only to make the demo realistic, and no logos.
+          Rafeeq, Keeta, Ninja, Carrefour, Lulu, Kulud or Wellcare. We use their names to make the demo realistic.
+          {' '}{APP_NAME} is not affiliated with any of these brands.
         </p>
       </section>
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { APP_NAME } from '../../config';
+import Logo from '../brand/Logo';
 import { useNavItems } from './navItems';
 
 export default function TopNav() {
@@ -7,8 +7,8 @@ export default function TopNav() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-surface">
       <div className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4">
-        <Link to="/" className="inline-flex min-h-11 items-center font-display text-[20px] font-extrabold tracking-tight text-brand">
-          {APP_NAME}
+        <Link to="/" className="inline-flex min-h-11 items-center rounded-btn">
+          <Logo variant="inline" height={40} />
         </Link>
         <nav aria-label="Main" className="hidden gap-1 lg:flex">
           {items.map(({ to, label, isActive }) => (

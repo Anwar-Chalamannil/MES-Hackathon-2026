@@ -13,7 +13,7 @@ test('judge flow: scan, build a Jollibee meal, compare, apply voucher, change ca
 
   // Fresh visitor
   await page.goto('/?reset=1');
-  await expect(page.getByRole('complementary', { name: 'Simulated data notice' })).toContainText('Simulated data');
+  await expect(page.getByRole('complementary', { name: 'Simulated data notice' })).toContainText('Simulated demo data. Not affiliated with the brands shown.');
   // The home page hero is a live comparison: flipping a toggle re-ranks the apps
   const heroFirst = page.getByTestId('hero-tag').first();
   await expect(heroFirst).toContainText('Keeta');
@@ -185,7 +185,7 @@ test('resilience: damaged saved data, unknown page, and keyboard use', async ({ 
   await expect(page).toHaveTitle(/Page not found/);
   await page.getByRole('link', { name: 'Go to the home page' }).click();
   await expect(page).toHaveURL('/');
-  await expect(page).toHaveTitle(/compare what you actually pay/);
+  await expect(page).toHaveTitle(/Perq/);
 
   // Keyboard: the first Tab stop is the skip link
   await page.goto('/about');

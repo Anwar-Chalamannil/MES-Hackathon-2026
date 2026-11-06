@@ -1,26 +1,40 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/bricolage-grotesque';
-@import '@fontsource-variable/public-sans';
+@import '@fontsource-variable/plus-jakarta-sans';
 
 @theme {
-  /* Body and forms: Public Sans (plain zeros, tabular figures, calm). Headlines and big prices: Bricolage. */
-  --font-sans: 'Public Sans Variable', system-ui, sans-serif;
-  --font-display: 'Bricolage Grotesque Variable', 'Public Sans Variable', system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans Variable', system-ui, sans-serif;
 
-  --color-brand: #0b5560; /* Gulf teal: actions and active states */
-  --color-brand-soft: #e0eded;
-  --color-win: #8a1538; /* Maroon: reserved. It marks the lowest total and nothing else. */
-  --color-bg: #f1f4f3; /* Pearl */
+  /* ---- Perq brand colours: exact, never change ---- */
+  --color-blue: #2878ff; /* logo, icons, focus ring, selected borders, large headings */
+  --color-pink: #ffb6d5; /* FILL ONLY: savings badges, "pays least" pill, decorative accents. Never text, never a boundary. */
+  --color-bg: #f7f7f2; /* app background */
+
+  /* ---- Supporting colours (every text pair is checked in src/lib/__tests__/contrast.test.ts) ---- */
+  /* #2878ff is only 4.0:1 with white text, so buttons and links use the deeper blue-700 (white text 5.75:1). */
+  --color-blue-700: #1a5fd6;
+  --color-blue-800: #1648b8; /* pressed */
+  --color-blue-50: #e8f0ff; /* selected chips, active tab */
+  --color-pink-50: #fff0f6; /* image wells, notice, banner wash */
+  --color-pink-ink: #9e1f55; /* text on pink (4.6:1) and savings text on white */
   --color-surface: #ffffff;
-  --color-ink: #0e2329; /* Gulf night */
-  --color-muted: #4f6469;
-  --color-line: #d3dbda;
-  --color-save: #2f7a12;
-  --color-warn: #a04508; /* 6.3:1 on white, 5.4:1 on its 10% tint */
+  --color-ink: #0f1e4a; /* navy body text */
+  --color-muted: #5a6478;
+  --color-line: #e4e6ec; /* card borders */
+  --color-control: #8b93a7; /* input and stepper borders (3:1 on white) */
+  --color-success: #1e7a3a;
+  --color-warn: #a04508;
   --color-fail: #b42318;
 
-  --radius-card: 10px;
-  --radius-btn: 8px;
+  /* ---- Names the existing components already use, now pointing at the Perq palette ---- */
+  --color-brand: #1a5fd6; /* buttons, links, active states */
+  --color-brand-soft: #e8f0ff;
+  --color-win: #1a5fd6; /* the lowest-total card (refined in R6) */
+  --color-save: #1e7a3a;
+
+  --radius-card: 16px;
+  --radius-btn: 12px;
+  --shadow-card: 0 2px 12px rgb(15 30 74 / 0.06);
 }
 
 html,
@@ -47,7 +61,7 @@ body {
 }
 
 @keyframes winner-flash {
-  from { background-color: color-mix(in srgb, var(--color-win) 12%, transparent); }
+  from { background-color: color-mix(in srgb, var(--color-blue) 14%, transparent); }
   to { background-color: transparent; }
 }
 .winner-flash {
@@ -61,7 +75,7 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-brand);
+  outline: 3px solid var(--color-blue);
   outline-offset: 2px;
 }
 

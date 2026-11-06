@@ -20,5 +20,5 @@ export function pageName(pathname: string): string {
 }
 
 export function pageTitle(pathname: string): string {
-  return pathname === '/' ? `${APP_NAME}: compare what you actually pay` : `${pageName(pathname)} · ${APP_NAME}`;
+  return pathname === '/' ? `${APP_NAME}: compare smarter, save more` : `${pageName(pathname)} · ${APP_NAME}`;
 }
