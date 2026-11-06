@@ -16,14 +16,16 @@ export default function BottomNav() {
             <Link
               to={to}
               aria-current={isActive ? 'page' : undefined}
-              aria-label={badge > 0 ? `${label}, ${badge}` : undefined}
               className="flex min-h-16 flex-col items-center justify-center gap-1 text-[12px] font-semibold"
             >
               <span className={`relative flex h-8 w-14 items-center justify-center rounded-full ${isActive ? 'bg-blue-50 text-brand' : 'text-muted'}`}>
                 <Icon size={22} strokeWidth={1.75} aria-hidden="true" />
                 <CountBadge count={badge} className="absolute -top-1 right-1" />
               </span>
-              <span className={isActive ? 'text-brand' : 'text-muted'}>{label}</span>
+              <span className={isActive ? 'text-brand' : 'text-muted'}>
+                {label}
+                {badge > 0 && <span className="sr-only">{label === 'Alerts' ? `, ${badge} new` : `, ${badge} items`}</span>}
+              </span>
             </Link>
           </li>
         ))}

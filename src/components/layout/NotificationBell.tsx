@@ -9,10 +9,10 @@ export default function NotificationBell() {
   return (
     <Link
       to="/notifications"
-      aria-label={unreadCount > 0 ? `Alerts, ${unreadCount} unread` : 'Alerts'}
       className="relative flex size-11 items-center justify-center rounded-full text-ink active:bg-blue-50"
     >
       <Bell size={24} strokeWidth={1.75} aria-hidden="true" />
+      <span className="sr-only">{unreadCount > 0 ? `Alerts, ${unreadCount} unread` : 'Alerts'}</span>
       <CountBadge count={unreadCount} className="absolute top-0.5 right-0.5" />
     </Link>
   );

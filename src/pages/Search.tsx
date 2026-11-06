@@ -68,7 +68,7 @@ export default function Search() {
   return (
     <div className="mx-auto max-w-3xl space-y-5 pb-8">
       <h1 className="text-[24px] font-extrabold tracking-tight">Search</h1>
-      <form role="search" onSubmit={submit} className="relative">
+      <form role="search" aria-label="Search results" onSubmit={submit} className="relative">
         <label className="block">
           <span className="sr-only">Search restaurants, products and apps</span>
           <SearchIcon size={20} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />

@@ -20,7 +20,7 @@ export default function Sidebar() {
   const expiryActive = pathname === '/vouchers/expiry';
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-20 hidden w-[248px] flex-col gap-6 overflow-y-auto border-r border-line bg-surface px-4 py-5 lg:flex">
+    <aside aria-label="Sidebar" className="fixed inset-y-0 left-0 z-20 hidden w-[248px] flex-col gap-6 overflow-y-auto border-r border-line bg-surface px-4 py-5 lg:flex">
       <Link to="/" aria-label="Perq home" className="inline-flex min-h-11 items-center rounded-btn px-1">
         <Logo variant="inline" height={52} />
       </Link>
@@ -45,7 +45,7 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      <nav aria-label="Categories" className="border-t border-line pt-4">
+      <nav aria-label="Shop categories" className="border-t border-line pt-4">
         <p className="px-3 pb-2 text-[12px] font-bold tracking-wide text-muted uppercase">Shop</p>
         <ul className="space-y-1">
           {CATEGORIES.map(({ to, label, icon: Icon }) => (

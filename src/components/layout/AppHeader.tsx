@@ -36,7 +36,7 @@ export default function AppHeader() {
           <Logo variant="inline" height={44} />
         </Link>
 
-        <form role="search" onSubmit={submit} className="relative mx-auto hidden w-full max-w-xl lg:block">
+        <form role="search" aria-label="Site search" onSubmit={submit} className="relative mx-auto hidden w-full max-w-xl lg:block">
           <label className="block">
             <span className="sr-only">Search restaurants, products and apps</span>
             <Search size={18} aria-hidden="true" className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />

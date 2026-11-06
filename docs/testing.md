@@ -24,5 +24,7 @@ Owners: Sadiya and Arefa. Log what was tested, what happened, and what to fix.
 
 | 2026-11-06 | Claude (automated + screenshots at 390 and 1280px) | R6 screens: blue ring and pink pill on the winner, prices never wrap, desktop compare side panel (basket, profile, Try a voucher), Best for your Food basket with category switch, Vouchers title, About images and credits | 334 unit tests and 29 e2e tests pass | None open |
 
+| 2026-11-06 | Claude (automated, desktop Chrome only) | R8 QA: axe-core (WCAG 2.0/2.1/2.2 A and AA plus best practice) on 19 routes at 320, 390 and 1280px, plus the profile sheet, ☰ menu and reset confirm. Lighthouse mobile on the production build: Accessibility 100, Best practices 100; Performance 93 with real (devtools) throttling, LCP 2.5s, TBT 70ms; with Lighthouse's default simulated throttling Performance is 74 to 88 because a headless software-GPU paint task is magnified 4x. | axe: 0 violations after fixing 2 issues (icon-link labels that did not contain their visible text; unnamed duplicate landmarks). 334 unit and 29 e2e tests pass | Real Android and iPhone test still needed (Sadiya, Arefa). Check Performance on a real phone |
+
 ## User feedback
 -
